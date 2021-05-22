@@ -1,0 +1,33 @@
+
+#include <stack>
+#include <bits/stdc++.h>
+
+using namespace std ;
+
+void sortStack(stack<int> &s){
+	// Write your code here
+
+   std::stack<int> temp ; 
+     
+    
+    while(!s.empty()){
+   
+    int val = s.top() ;
+    s.pop() ;
+   
+    while(!temp.empty() && temp.top() < val){
+        s.push(temp.top());
+        temp.pop();
+    } 
+
+    temp.push(val);
+    
+    }
+    
+    while(!temp.empty()){
+        cout<<temp.top()<<" ";
+        temp.pop();
+    }
+    
+    
+}

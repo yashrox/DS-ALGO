@@ -1,0 +1,47 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+
+void print(int a[] , int n , int result[] , int m){
+
+if(n == 0){
+    for(int i=0 ; i<m ; i++){
+        cout<<result[i]<<" ";
+    }
+    cout<<endl ;
+    return ;
+}
+
+int value = a[0] ;
+
+print(a+1 , n - 1 , result , m);
+int newInput[m+1] ;
+for(int i=0 ; i<m ; i++){
+    newInput[i] = result[i];
+}
+
+newInput[m] = value;
+print(a+1 , n - 1  , newInput , m+1);
+
+}
+
+int main()
+{
+    int a[] = {1,2,3};
+    int n = 3 ;
+    int result[n] ;
+    int m = 0 ;
+        
+    print(a , n , result , m );
+    return 0;
+}
+

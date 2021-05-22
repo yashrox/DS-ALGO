@@ -1,0 +1,47 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+
+using namespace std;
+
+bool isPalindrome(char a[] , int i , int j) {
+    while(i != j && i < j) {
+        if (a[i] != a[j]) {
+            return false;
+        }
+        i++;
+        j--;
+    }
+    return true;
+}
+
+int palindrome(char a[], int i , int j) {
+    if (i >= j) {
+        return 0;
+    }
+    
+    if (isPalindrome(a , i , j)) {
+        return 0;
+    }
+    int temp = 500;
+    for(int k=i; k<=j-1; k++) {
+        int count = 1 + palindrome(a , i, k) + palindrome(a , k+1, j);
+       temp = min(count , temp);
+    } 
+    return temp;
+}
+
+int main(){
+    char a[4] = {'g', 'e', 'e', 'k'};
+    
+    int result = palindrome(a , 0, 3);
+    cout<<result<<endl;
+    return 0;
+}
+

@@ -1,0 +1,54 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+
+using namespace std;
+
+int n_ways(int num , int* dp){
+    
+    
+    if(num == 0 || num == 1){
+        return 1 ;
+    }
+    
+    if(num == 2){
+        return 2 ;
+    }
+    
+    if(dp[num] > 0){
+        return dp[num];
+    }
+    
+    int step1 = n_ways(num - 1 , dp);
+    int step2 = n_ways(num - 2 , dp);
+    int step3 = n_ways(num - 3 , dp);
+    
+    int result  = step1 + step2 + step3;
+    dp[num]  = result ;
+    
+    cout<<result<<"  "<<num<<endl ;
+    
+    return result ;
+}
+
+int main()
+{
+    int* dp = new int[7];
+    
+    dp[0] = 1 ;
+    dp[1] = 1 ;
+    dp[2] = 2 ;
+    
+    int x = n_ways(7 , dp);
+    
+    delete [] dp;
+    cout<<x ;
+    return 0;
+}
+

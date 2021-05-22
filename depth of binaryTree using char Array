@@ -1,0 +1,42 @@
+/*********** nlnnlll ******************/
+/******** FIND THE DEPTH ****************/
+
+
+int heightFunction(char str[] , int &i ){
+
+    if(str[i] == '\0'){
+        return 0;
+    }
+    
+    
+    
+    if(str[i] != 'n'){
+		return 1 ;    
+    }
+    
+    
+    int leftHeight = 1 + heightFunction(str , ++i );
+    int rightHeight = 1 + heightFunction(str , ++i);
+
+    
+    return max(leftHeight , rightHeight) ;
+    
+}
+
+int depth(char str[]) {
+    /* Don't write main().
+     * Don't read input, it is passed as function argument.
+     * Return output and don't print it.
+     * Taking input and printing output is handled automatically.
+     */
+    
+    if(str[0] == 'l'){
+        return 0;
+    }
+    
+    int i = 0;
+    
+return heightFunction(str , i ) - 1 ;
+    
+}
+

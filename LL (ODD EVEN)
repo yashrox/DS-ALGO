@@ -1,0 +1,90 @@
+#include<bits/stdc++.h>
+// Following is the node structure
+/**************
+class node{
+public:
+    int data;
+    node * next;
+    node(int data){
+        this->data=data;
+        this->next=NULL;
+    }
+};
+***************/
+
+node* change(node* head , node* oddH , node* oddT , node* evenH  ,node* evenT){
+    node* temp = head ;
+    
+    int k  = 0 ;
+    
+    while(temp != NULL){
+      
+        if(temp->data % 2 == 0){
+            
+            if(evenH == NULL){
+                evenH  = temp ;
+                evenT = temp ;
+            }else{
+                evenT->next = temp ;
+                evenT  = temp ; 
+            }
+        }else{
+            if(oddH == NULL){
+                oddH = temp ; 
+                oddT = temp ;
+            }else{
+             
+                oddT->next = temp;
+                oddT = temp;
+             
+            }
+        }
+        k++ ;
+        temp = temp->next ;
+    }
+    
+    if(evenT != NULL){
+    evenT->next = NULL;    
+    }
+    
+    if(oddT != NULL){
+     oddT -> next  = evenH ;   
+    }
+	 
+    
+    if(k == 1){
+   	 if(oddH != NULL){
+         oddH->next = NULL ;
+        return oddH ;
+    }
+    if(evenH != NULL){
+        return evenH ;
+    }
+        
+    }else{
+        
+        if(oddH != NULL){
+        	return oddH   ;  
+        }else{
+            return evenH ;
+        }
+        
+        
+    }
+    
+   
+    
+    
+}
+
+node* arrange_LinkedList(node* head)
+{
+    //write your code here
+    node* oddH = NULL;
+    node* evenH = NULL;
+    node* oddT = NULL;
+    node* evenT = NULL ;
+    
+    return change(head , oddH , oddT , evenH , evenT);
+    
+}

@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+
+/*************
+ Following is the Node<int> structure already written.
+
+ template <typename T>
+ class Node {
+	public:
+	T data;
+	Node* next;
+ 
+	Node(T data) {
+        next = NULL;
+        this->data = data;
+	}
+ 
+	~Node() {
+        if (next != NULL) {
+            delete next;
+        }
+	}
+ };
+ 
+*************/
+
+Node<int>* shift(Node<int> *head , int n , int count){
+    if(count == 0){
+        return head ; 
+    }
+    
+    Node<int>* temp = head ; 
+    
+    if(temp -> data == n){
+        head = head -> next ; 
+    }else{
+        Node<int>* prev ; 
+        while(temp -> data != n){
+            prev  = temp ;
+            temp = temp -> next ;
+        }
+        prev -> next = temp -> next ; 
+    }
+    
+    Node<int>* move = head ;
+    
+    while(move->next != NULL){
+        move = move -> next  ;
+    }
+    
+    move->next = temp ;
+    temp->next = NULL ;
+    
+    Node<int>* change = shift(head , n , --count);
+    return change ;
+    
+}
+
+
+Node<int>* func(Node<int> *head,int n) {
+    /* Don't write main().
+     * Don't read input, it is passed as function argument.
+     * Return output and don't print it.
+     * Taking input and printing output is handled automatically.
+     */
+    
+	Node<int>* temp = head ;
+    int length  = 0 ;
+    
+    while(temp -> next != NULL){
+    	if(temp->data == n){
+            length++ ;
+        }  
+        temp  = temp -> next ;
+    }
+   
+    return shift(head , n , length);
+}
+

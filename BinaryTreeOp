@@ -1,0 +1,73 @@
+/*
+********************************** BInary Tree Input / output / diameter / max height ********************************** 
+
+*/
+
+#include <iostream>
+#include <queue>
+
+
+
+using namespace std;
+
+template <typename T>
+
+class BinaryTree {
+    public :
+    T data;
+    BinaryTree<T>* left ;
+    BinaryTree<T>* right ;
+
+    BinaryTree(T data){
+        this->data = data ;
+        left = NULL ;
+        right = NULL ; 
+    }
+};
+
+BinaryTree<int>* takeInput(){
+    int n ;
+    cout<<"Enter the root elements"<<endl;
+    cin>>n ;
+    BinaryTree<int>* root = new BinaryTree<int>(n);
+    queue<BinaryTree<int>*> q ;
+    q.push(root);
+    
+    while(!q.empty()){
+        BinaryTree<int>* parent = q.front();
+        
+        int left , right ;
+        cout<<"Enter the left chid"<<parent->data<<endl ;
+        cin>>left ; 
+        cout<<"Enter the right child"<<parent->data<<endl;
+        cin>>right;
+       
+        q.pop();
+        
+        if(left != -1){
+            BinaryTree<int>* leftNode = new BinaryTree<int>(left);    
+            q.push(leftNode);
+            parent->left = leftNode;    
+        }
+        
+        if(right != -1){
+        BinaryTree<int>* rightNode = new BinaryTree<int>(right);    
+        q.push(rightNode);
+        parent->right = rightNode;
+            
+        }
+        
+        
+    }
+    
+    return root ;
+}
+
+int main()
+{
+   
+   BinaryTree<int>* root = takeInput();
+   
+    return 0;
+}
+

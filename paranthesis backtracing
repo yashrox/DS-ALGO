@@ -1,0 +1,32 @@
+
+#include <iostream>
+
+using namespace std;
+
+void paranthesis(string output , int start, int end) {
+    if (start == 0 && end == 0) {
+        cout<<output<<endl;
+        return;
+    }
+    
+    if (start > 0) {
+        paranthesis(output+'(', start-1, end);
+    }
+    if (end > 0) {
+        if (start == 0) {
+            while (end--) {
+                output = output + ')';
+            }
+            paranthesis(output+')', start, end);
+        } else {
+            paranthesis(output+')', start, end-1);    
+        }
+    }
+    
+}
+
+int main()
+{
+    paranthesis("", 3 , 3);
+    return 0;
+}

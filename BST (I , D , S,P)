@@ -1,0 +1,185 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+class BinaryTreeNode {
+public:
+    T data;
+    BinaryTreeNode<T> *left;
+    BinaryTreeNode<T> *right;
+    
+    BinaryTreeNode(T data) {
+        this->data = data;
+        this->left = NULL;
+        this->right = NULL;
+    }
+};
+
+
+class BST {
+	// Complete this class
+    
+    private:
+    BinaryTreeNode<int>* root ; 
+    
+   
+    
+    BinaryTreeNode<int>* insertRoot(BinaryTreeNode<int>* root , int input) {
+        
+        if(root == NULL){
+            BinaryTreeNode<int>* newNode = new BinaryTreeNode<int>(input);
+            return newNode ; 
+        }
+        
+        if(root->data > input){
+            root->left = insertRoot(root->left , input);
+        }
+        
+        if(root->data <= input){
+            root->right = insertRoot(root->right , input);
+        }
+        
+        return root ;
+        
+    }
+    
+    bool searchInput(BinaryTreeNode<int>* root , int input){
+        if(root == NULL){
+            return false ;
+        }
+        
+        if(root->data == input){
+            return true ;
+        }
+        
+        if(root->data > input){
+        	return searchInput(root->left , input);
+        }
+        
+        if(root->data< input){
+            return searchInput(root->right , input);
+        }
+        
+    }
+
+    
+    BinaryTreeNode<int>* deleteInput(BinaryTreeNode<int>* root  , int input){
+        if(root == NULL){
+            return NULL ; 
+        }
+        
+        if(root->data > input){
+            root->left = deleteInput(root->left , input);
+        }
+        if(root->data < input){
+            root->right = deleteInput(root->right , input);
+        }
+        if(root->data == input){
+            if(root->left == NULL && root->right == NULL){
+                delete root ;
+                return NULL ;
+            }else if(root->left == NULL){
+                BinaryTreeNode<int>* temp = root->right ;
+                root->right = NULL ;
+                delete root ; 
+                return temp ; 
+            }else if(root->right == NULL){
+                BinaryTreeNode<int>* temp = root->left ;
+                root->left = NULL ;
+                delete root ; 
+                return temp ;
+            }else{
+                BinaryTreeNode<int> * temp = root->right ;
+                while(temp->left != NULL){
+                    temp = temp->left;
+                }
+                root->data = temp->data ; 
+                root->right = deleteInput(root->right , temp->data);
+				return root ;
+            }
+        
+        }
+        
+        return root ;
+    }
+    
+    void print(BinaryTreeNode<int>* root ){
+        if(root == NULL){
+            return ;
+        }
+        cout<<root->data<<":";
+        if(root->left){
+        cout<<"L:"<<root->left->data<<",";
+        }
+        if(root->right){
+        cout<<"R:"<<root->right->data ;
+        }
+        cout<<endl;
+        
+        print(root->left);
+       
+        
+        print(root->right);
+    	
+        
+    }
+    
+    public: 
+    
+     BST(){
+        this->root = NULL;
+    }
+    
+    void insert(int input){
+        this->root = insertRoot(this->root , input);
+    }
+  
+     bool hasData(int input){
+         if(root == NULL){
+             return false ;
+         }else{
+             return searchInput(root , input);
+         }
+     }
+ 
+    void deleteData(int input){
+     this->root = deleteInput(this->root , input);   
+    }
+    
+    void printTree(){
+        print(this->root);
+    }
+    
+};
+
+
+int main()
+{
+     BST *tree = new BST();
+     tree->insert(20);
+     tree->insert(40);
+     tree->insert(10);
+     tree->insert(70);
+     tree->insert(15);
+     tree->insert(35);
+     tree->insert(25);
+     tree->insert(30);
+     tree->insert(65);
+     tree->printTree();
+     cout<<endl;
+     cout<<endl;
+     tree->deleteData(20);
+     tree->printTree();
+
+    return 0;
+}
+

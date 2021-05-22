@@ -1,0 +1,120 @@
+#include<bits/stdc++.h>
+/**********
+ * Following is the Node class that is already written.
+ 
+class Node{
+public:
+    int data;
+    Node *next;
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }
+};
+ 
+*********/
+
+
+//Time limit optimzed 2 testcase was not completed
+
+
+Node* change(Node *head ,  long long count){
+    if(head == NULL){
+        if(count > 0){
+            count = count % 10 ; 
+            Node* ptr = new Node(count);
+            ptr -> next = NULL ;
+            return ptr ; 
+        }else{
+        	  return head ;
+        }
+    }
+    
+    int smallValue = count % 10 ;
+    
+    Node* smallPointer = change(head->next , count/10);
+    
+    head -> data = smallValue ; 
+    
+    if(smallPointer != NULL){
+        head -> next = smallPointer ;
+    }
+    
+    return head ;
+    
+    
+}
+
+Node* change2(Node *head , int length , int carry) {
+    if(length == 0){
+        if(carry > 0){
+            carry = carry % 10 ; 
+            Node* ptr = new Node(carry);
+            ptr -> next = head ;
+            return ptr ;
+        }else{
+            return head ;
+        }
+    }
+    
+    Node* temp = head ;
+    
+    for(int i=1 ; i<length ; i++){
+        temp = temp->next ; 
+    }
+    
+    int value  = temp -> data + carry ; 
+    
+    if(value >= 10){
+        temp->data = value % 10 ;
+    	carry =  value / 10 ;     
+    }else{
+       temp->data = value ;  
+       carry = 0; 
+    }
+    
+    return change2(head , --length , carry);
+    
+}
+
+Node* NextLargeNumber(Node *head) {
+    /* Don't write main().
+     * Don't read input, it is passed as function argument.
+     * Return output and don't print it.
+     * Taking input is handled automatically.
+     */
+ 	
+//      long long count = 0  ; 
+    int length = 0;
+    Node* temp = head ;
+    
+    while(temp != NULL){
+        //count  = count * 10 + temp -> data ;
+		length++ ; 
+        temp = temp->next ;
+    }
+    
+    return change2(head , length , 1);
+//     count = count + 1 ;
+    
+//    // cout<<count<<endl ;
+    
+//     Node* reverse =  change(head , count);
+    
+//     Node* temp1 = reverse ;
+//     Node* temp2 = reverse -> next ;
+// 	temp1 -> next  = NULL ;
+   
+//     while(temp2 != NULL){
+//         Node* next = temp2 -> next ; 
+//         temp2 -> next = temp1 ;
+//         temp1 = temp2 ;
+//         temp2 = next ;
+//     }
+ 
+//     return temp1 ; 
+    
+    
+    
+    
+}

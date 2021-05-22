@@ -1,0 +1,54 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+#include <math.h>
+#include <vector>
+#define max  500 
+
+using namespace std;
+
+int largeNo(int a[] , int n  , int index , int len){
+    
+    if(n == 1){
+        return len ;
+    }
+    
+    int carry = 0 ;
+    int num ;
+    for(int i=0 ; i<len ; i++){
+         num  = a[i] * index + carry ;
+        a[i] = num % 10 ;    
+        carry = num / 10 ;
+    }
+    
+    
+    while(carry){
+        int put = carry % 10 ;
+        carry = carry / 10 ;
+        a[len] = put ;
+        len++ ;
+    }
+    
+    return largeNo(a , n-1 , index + 1 , len);
+    
+}
+
+int main()
+{   
+    int a[max] ;
+    int n = 100;
+     a[0] = 1 ;
+    int x = largeNo(a , n , 2 , 1);
+    for(int i=(x-1) ; i>=0 ; i--){
+        cout<<a[i];
+    }
+    cout<<endl;
+    cout<<"93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000";
+    return 0;
+}

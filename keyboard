@@ -1,0 +1,46 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+
+using namespace std;
+
+void keypad(string str, string output[], string codes[], int& total, string outputCode) {
+    if (str.size() == 0) {
+        output[total++] = outputCode;
+        return;
+    }
+    
+    string val = codes[str[0] - '0'];
+    for (int i=0; i<codes[str[0] - '0'].size(); i++) {
+        keypad(str.substr(1), output, codes, total, outputCode + val[i]);
+    }
+    return;
+}
+
+int main()
+{
+    int num = 234;
+    string codes[] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    
+    string str =  to_string(num);
+    int size = 1;
+    for (int i=0; i<str.size(); i++) {
+        size *= codes[str[i] - '0'].size();
+    }
+    cout<<size<<endl;
+    string output[size];
+    int outSize = 0;
+    keypad(str, output, codes, outSize, "");
+    
+    for(int i=0; i<outSize; i++) {
+        cout<<output[i]<<" ";
+    }
+    return 0;
+}
+

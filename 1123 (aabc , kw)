@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+void pattern(string str , string output) {
+    if (str.size() == 0) {
+        cout<<output<<endl;
+        return;
+    }
+    
+    char val1 = 'a' + int(str[0] - '0' - 1);
+    pattern(str.substr(1), output + val1);
+    
+    if (str.size() >= 2) {
+        int value = stoi(str.substr(0,2));
+        if (value >= 10 && value <= 26) {
+            char val2 = 'a' + value - 1 ;
+            pattern(str.substr(2), output + val2);
+        }
+    }
+}
+
+int main()
+{
+    string str = "1123";
+    pattern(str, "");
+    return 0;
+}
+

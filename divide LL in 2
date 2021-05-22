@@ -1,0 +1,99 @@
+/*************
+ Following is the Node structure already written.
+
+ template <typename T>
+ class Node {
+	public:
+	T data;
+	Node* next;
+ 
+	Node(T data) {
+ next = NULL;
+ this->data = data;
+	}
+ 
+	~Node() {
+ if (next != NULL) {
+ delete next;
+ }
+	}
+ };
+ 
+*************/
+
+Node<int>* change(Node<int>* head , Node<int>* tail ){
+    tail->next = NULL ; 
+    Node<int>* temp1  = head ; 
+    Node<int>* temp2 = head->next ;
+    temp1->next = NULL;
+    
+    while(temp2 != NULL){
+        Node<int>* temp3 = temp2->next ;
+        temp2 -> next = temp1 ; 
+        temp1 = temp2 ; 
+        temp2 = temp3;
+    }
+    
+    return temp1 ;
+}
+
+
+void AlternatingSplit(Node<int>* head) {
+	// Write your code here
+Node<int>* temp = head ; 
+Node<int>* h1 = NULL ; 
+Node<int>* h2 = NULL ;
+Node<int>* t1 = NULL ;
+Node<int>* t2 = NULL;     
+    
+   int k = 0 ; 
+    
+    while(temp != NULL){
+    	if(k % 2 == 0){
+            
+            if(h1 == NULL){
+        		h1 = temp ; 
+                t1 = temp ; 
+            }else{
+                t1 -> next = temp ; 
+                t1 = temp;
+            }
+            
+        }else{
+             if(h2 == NULL){
+        		h2 = temp ; 
+                t2 = temp ; 
+            }else{
+                t2 -> next = temp ; 
+                t2 = temp;
+            }
+        }
+        temp = temp -> next ; 
+        k++ ;
+    }
+    
+    if(k == 1){
+    cout<<h1->data ; 
+	return ;
+    }
+    
+    if(k == 2){
+       cout<<h1->data ;
+        cout<<h2->data ;
+        return;
+    }
+    
+    
+     Node<int>* head1 = change(h1 , t1);
+     Node<int>* head2 = change(h2 , t2);
+    
+	while(head1 != NULL){
+        cout<<head1->data<<" ";
+        head1 =  head1->next;
+     }
+    cout<<endl;
+     	while(head2 != NULL){
+        cout<<head2->data<<" ";
+        head2 = head2->next;
+    }
+}

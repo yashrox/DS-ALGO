@@ -1,0 +1,82 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+
+using namespace std;
+
+void merge(int a[] , int start , int mid , int end){
+    int m = mid - start + 1 ;
+    int n = mid + end ; 
+    int e[m];
+    int f[n];
+    
+    for(int i=0 ; i<m ; i++){
+        e[i] = a[start + i];    
+    }
+    
+    for(int j=0 ; j<n ; j++){
+        f[j] = a[mid + 1 + j] ;
+    }
+    
+    int k=start;
+    int c=0;
+    int d=0;
+    
+    while(c<m && d<n){
+        if(e[c] < f[d]){
+            a[k] = e[c];
+            k++;
+            c++;
+        }else{
+            a[k] = f[d];
+            k++;
+            d++;
+        }
+    }
+    
+    while(c<m){
+        a[k] = e[c];
+        k++;
+        c++;
+    }
+    
+    while(d<n){
+        a[k] = f[d];
+        k++;
+        d++;
+    }
+    
+    return ;
+}
+
+void mergeSort(int a[]  , int start , int end){
+    if(start>=end){
+        return ;
+    }
+    int mid = (start + end)/2 ;
+    mergeSort(a , start , mid);
+    mergeSort(a , mid+1 , end);
+    merge(a , start , mid  , end);
+    
+    
+}
+
+int main()
+{
+    int a[] = {2,5,7,6,8,1,4,3,9}; 
+    int n = 9 ; 
+    mergeSort(a , 0 , 8);
+    
+    for(int i=0 ; i<9 ; i++){
+        cout<<a[i]<<" ";
+    }
+    
+    return 0;
+}
+

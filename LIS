@@ -1,0 +1,50 @@
+void lisCount(int a[] , int n  , int count[] , int index){
+    if(n == index){
+        return ;
+    }
+    
+    int max = 1 ;
+    bool update = false ;
+    int value = a[index];
+    for(int i=(index-1) ; i>=0  ; i--  ){
+        if(value>a[i]){
+            int cot = count[i] ;
+            if(cot > max){
+                max = cot ;
+            }
+            update = true ;
+        }
+    }
+    
+    if(update){
+        count[index] = 1 + max ;
+    }
+    
+    lisCount(a , n  , count , index+1) ;
+    
+}
+
+ int lis(int arr[], int n) {
+		
+				
+	/*Write your code here. 
+	 *Don't write main().
+	 *Don't take input, it is passed as function argument.
+	 *Don't print output.
+	 *Taking input and printing output is handled automatically.
+	*/ 
+
+     int countArray[n] = {1} ;	
+    
+     lisCount(arr , n , countArray , 1); 
+     
+     int max = 1;
+     for(int i=0 ; i<n ; i++){
+         if(max < countArray[i]){
+             max  = countArray[i];
+         }
+     }
+     
+     return max ;
+     
+ }

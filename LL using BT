@@ -1,0 +1,91 @@
+#include <queue>
+// Following is the Node and Binary Tree node structure
+
+/**************Level wise linkedlist***************************using binary tree/
+class node{
+public:
+    T data;
+    node<T> * next;
+    node(T data){
+        this->data=data;
+        this->next=NULL;
+    }
+};
+
+class BinaryTreeNode {
+    public : 
+    T data;
+    BinaryTreeNode<T> *left;
+    BinaryTreeNode<T> *right;
+
+    BinaryTreeNode(T data) {
+        this -> data = data;
+        left = NULL;
+        right = NULL;
+    }
+};
+
+***************/
+
+void nodes(queue<BinaryTreeNode<int>*> q1 , queue<BinaryTreeNode<int>*> q2 , vector<node<int>*> &v){
+    if(q1.empty()){
+        return ;
+    }
+    
+    node<int>* head = NULL ;
+    
+    while(!q1.empty()){
+        BinaryTreeNode<int>* temp = q1.front();
+        q2.push(temp);
+        q1.pop();
+        
+        node<int>* v1 = new node<int>(temp->data);
+        
+        if(head == NULL){
+   		   head = v1 ;
+        	v.push_back(head);
+        }else{
+            head->next = v1 ; 
+            head = v1 ;
+        }
+        
+    }
+  
+    while(!q2.empty()){
+        BinaryTreeNode<int>* temp = q2.front();
+        if(temp->left != NULL){
+            q1.push(temp->left);
+        }
+        if(temp->right != NULL){
+            q1.push(temp->right);
+        }
+        q2.pop();
+    }
+    
+    nodes(q1 , q2 , v);
+    
+}
+
+
+vector<node<int>*> createLLForEachLevel(BinaryTreeNode<int> *root) {
+    // Write your code here
+
+    vector<node<int>*> v ;
+    
+   queue<BinaryTreeNode<int>*> q1 ; 	
+   queue<BinaryTreeNode<int>*> q2 ; 
+   
+    node<int>* v1 = new node<int>(root->data);
+    v.push_back(v1);
+    
+    if(root->left != NULL){
+        q1.push(root->left);
+    }
+    if(root->right != NULL){
+        q1.push(root->right);
+    }
+    
+	nodes(q1 , q2  , v);
+    
+    return v ;
+}

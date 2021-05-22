@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+
+int len(char input[]){
+   int count = 0 ;
+    for(int i=0 ; input[i]!= '\0' ; i++){
+        count++ ;
+    }
+    return count ; 
+}
+
+int countBracketReversals(char input[]){
+	// Write your code here
+
+    int check = len(input);
+    if(check%2 != 0){
+        return -1 ;
+    }
+    
+	stack<char> s ; 
+    
+    for(int i=0 ; input[i]!= '\0' ; i++){
+    
+        switch(input[i]){
+            case '{' : s.push(input[i]);
+                		break ;
+            case '}' : {
+                if(s.empty()){
+                    s.push(input[i]);
+                }else if(!s.empty() && s.top() == '}'){
+                    s.push(input[i]);
+                }else if(!s.empty() && s.top() == '{'){
+                    s.pop();
+                }
+                break ; 
+            }   
+        }
+}
+
+    int count = 0 ; 
+    
+    while(!s.empty() )
+    {
+        char op1 = s.top();
+        s.pop();
+        char op2 = s.top();
+        s.pop();
+        
+        if(op1 == op2){
+            count++ ; 
+        }else{
+            count = count + 2 ;
+        }
+        
+    }
+    
+    return count ; 
+    
+}
+

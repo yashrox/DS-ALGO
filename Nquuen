@@ -1,0 +1,84 @@
+bool solve(int n ,int** solution , int start  , int end){
+    
+    for(int i=start ; i>=0  ; i--){
+        if(solution[i][end] == 1){
+            return false;
+        }
+    }
+    
+    int p = start ;
+    int q = end  ;
+    
+    while(p>=0 && q>=0){
+        if(solution[p][q] == 1){
+            return false;
+        }
+        p--;
+        q--;
+    }
+     
+    p = start  ;
+    q  = end ;
+    
+    while(p>=0 && q<n){
+        if(solution[p][q] == 1){
+            return false;
+        }
+        p--;
+        q  = q + 1;
+    }
+
+    
+    return true ;
+}
+
+bool NQueens(int n , int** solution , int start){
+    if(start == n ){
+        for(int i=0  ; i<n ; i++){
+            for(int j=0 ; j<n ; j++){
+                cout<<solution[i][j]<<" ";
+            }
+        }
+        cout<<endl;
+        return  false;
+    }
+    
+    for(int i=0  ; i<n ; i++){
+        
+   		 if(solve(n ,solution , start , i )){
+             solution[start][i] = 1 ;
+            int check =  NQueens(n , solution , start+1);
+         	if(check){
+                return true;
+            }
+        	solution[start][i] = 0;
+         }
+         }
+ return false ;  
+}
+
+
+void placeNQueens(int n){
+
+  /* Don't write main().
+   *  Don't read input, it is passed as function argument.
+   *  Print output as specified in the question
+  */
+
+    int **solution = new int*[n];
+   
+    for(int i = 0; i < n; i++) { 
+    solution[i] = new int[n];
+   }
+   
+    for(int i=0  ; i<n ; i++){
+        for(int j=0 ; j<n ; j++){
+            solution[i][j] = 0;
+        }
+    }
+
+    NQueens(n  ,solution , 0 );
+    
+    
+}
+

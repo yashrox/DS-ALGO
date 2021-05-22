@@ -1,0 +1,83 @@
+// Following is the Binary Tree node structure
+/**************
+class BinaryTreeNode {
+    public : 
+    T data;
+    BinaryTreeNode<T> *left;
+    BinaryTreeNode<T> *right;
+
+    BinaryTreeNode(T data) {
+        this -> data = data;
+        left = NULL;
+        right = NULL;
+    }
+};
+***************/
+
+
+class Pair{
+    public :
+    int count ;
+    queue<BinaryTreeNode<int>*> q ; 
+};
+
+Pair* findLong(BinaryTreeNode<int>* root){
+    
+    if(root == NULL){
+        Pair* p = new Pair();
+        p->count = 0 ;
+        return p ; 
+    }
+    
+    Pair* left = findLong(root->left);
+    Pair* right = findLong(root->right);
+    
+       Pair *p1 = new Pair();
+    
+    //cout<<
+    
+    if(left->count > right->count){
+        p1->count = left->count + 1 ; 
+        p1->q.push(root);
+        while(!left->q.empty()){
+            p1->q.push(left->q.front());
+            left->q.pop();
+        }
+    }else{
+         p1->count = right->count + 1 ; 
+        p1->q.push(root);
+        while(!right->q.empty()){
+            p1->q.push(right->q.front());
+            right->q.pop();
+        }
+    }
+    
+    return p1 ;
+    
+}
+
+vector<int>* longestPath(BinaryTreeNode<int>* root) {
+	// Write your code here
+
+    Pair *p  = findLong(root);
+	
+    vector<int> *v = new vector<int>() ;
+    
+    int a[p->count] ;
+    int i=0;
+    while(!p->q.empty()){
+    BinaryTreeNode<int>* temp = p->q.front() ;
+        a[i++] = temp->data ;
+        p->q.pop();
+    }
+
+    
+	for(int i=(p->count - 1) ; i>=0  ; i-- ){
+        v->push_back(a[i]);
+    }    
+    
+    
+  return v ;  
+    
+    
+}

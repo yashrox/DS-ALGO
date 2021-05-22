@@ -1,0 +1,42 @@
+int count(int target , int* dp){
+    if(target == 1 || target == 2 || target == 3){
+        return 1 ;
+    }
+    if(dp[target] > 0){
+        return dp[target];
+    }
+    for(int i=4 ; i<=target ; i++){
+        int step1 , step2 , step3 ;
+        step1 = step2 = step3 = target ;
+        int x = i - 1;
+         step1 = count(x , dp);
+        if(i%2 == 0){
+            x = i/2 ;
+            step2 = count(x  , dp);
+        }
+        if(i%3 == 0){
+            x = i/3 ;
+            step3 = count(x , dp);
+        }
+        
+        int result = 1 + min(min(step1 , step2) , step3);
+        dp[i] = result ;
+    }
+    
+    return dp[target];
+}
+
+
+int countStepsTo1(int target){
+
+    /* Don't write main().
+     * Don't read input, it is passed as function argument.
+     * Return output and don't print it.
+     */
+	int* dp = new int[target+1];
+    dp[1] = 1 ;
+    dp[2] = 1 ;
+    dp[3] = 1 ;
+    
+    return count(target , dp);
+}

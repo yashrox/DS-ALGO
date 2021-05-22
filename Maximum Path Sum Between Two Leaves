@@ -1,0 +1,74 @@
+// Following is the Binary Tree node structure
+/**************
+ class BinaryTreeNode {
+ public :
+ T data;
+ BinaryTreeNode<T> *left;
+ BinaryTreeNode<T> *right;
+ 
+ BinaryTreeNode(T data) {
+ this -> data = data;
+ left = NULL;
+ right = NULL;
+ }
+ };
+ ***************/
+
+class pair1{
+    public: 
+   long long int best ;
+   long long int current ;
+};
+
+pair1* leafMax(BinaryTreeNode<int> *root){
+  		
+      
+	if(root == NULL){
+       pair1* p = new pair1();
+       p->best = 0 ;
+       p -> current = 0 ;
+        return p ;
+    }    
+    
+     pair1* leftData = leafMax(root->left);
+     pair1* rightData = leafMax(root->right);
+    
+    long long int max1 =  root->data + leftData->current ;
+    long long int max2 =  root->data + rightData->current ;
+    long long int max3 ;
+    
+    if(max1 > max2){
+        max3 = max1 ;
+    }else{
+        max3 = max2 ;
+    }
+    
+   long long int best1  = leftData->current + rightData->current + root->data ;
+    
+   long long int best2 = leftData->best > rightData->best ? leftData->best : rightData->best ;
+    
+   long long int best3 = best1 > best2 ? best1 : best2 ;
+    
+    pair1* p1 = new pair1();
+    p1->best = best3 ;
+    p1->current = max3 ; 
+    
+    return p1 ;
+    
+} 
+
+
+long long int maximumSumLeafpath(BinaryTreeNode<int> *root){
+    /* Don't write main().
+     * Don't read input, it is passed as function argument.
+     * Return output and don't print it.
+     * Taking input and printing output is handled automatically.
+     */
+  
+    pair1* p = leafMax(root);
+
+	return p->best ;
+	
+
+}
+

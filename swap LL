@@ -1,0 +1,105 @@
+#include <bits/stdc++.h>
+//head is head of your linked list, i and j are indexes to be swapped
+// Following is the node structure
+/**************
+class node{
+public:
+    int data;
+    node * next;
+    node(int data){
+        this->data=data;
+        this->next=NULL;
+    }
+};
+***************/
+node* swap_nodes(node *head,int i,int j)
+{
+    //write your code here
+    node* temp = head ;
+    node* add1  ;
+    node* next1;
+    node* add2;
+    node* next2;
+    node* prev1 ;
+    node* prev2 ;
+    
+    
+    
+    
+    
+    int k = i ;
+    while(k - 1 > 0){
+        temp = temp -> next ;
+        k-- ;
+    }
+    
+    add1 = temp->next ;
+    prev1 = temp ;
+    next1 = add1 -> next ;
+    
+    temp = head ;
+    
+    int l = j ;
+    while(l - 1 > 0){
+        temp = temp -> next ;
+        l-- ;
+    }
+	add2 = temp->next ;
+    prev2 = temp ;    
+	next2 = add2 -> next ;
+   
+    
+     if((i == 0 || j == 0) && (abs(i - j) == 1 )){
+             if(i == 0){
+            add2 -> next = prev1 ;
+            head = add2 ;
+            prev1 -> next = next2 ;
+        }
+        if(j == 0 ){
+            add1 -> next = prev2 ;
+            head = add1 ;
+            prev2 -> next = next1 ;
+        }
+        return head ;
+    }
+    
+	if(i == 0 || j == 0 ){
+        if(i == 0){
+   			add2 -> next = add1 ;		         
+        	head  = add2 ;
+          	prev2 -> next = prev1 ;
+            prev1 -> next = next2 ;
+        }
+        if(j == 0){
+            add1 -> next = add2 ;
+            head = add1 ;
+            prev1 -> next = prev2 ;
+            prev2 -> next = next1 ;
+        }
+        
+        return head ;
+    }else if(abs(i - j) == 1 ){
+        if(i - j < 0){
+       	 	prev1 -> next = add2 ;
+        	add2 -> next = add1 ;
+        	add1 -> next = next2 ;     
+        }else{
+            prev2 -> next = add1 ;
+            add1 -> next = add2 ;
+            add2 -> next = next1 ;
+        }
+        
+        
+    }else{
+        prev1 -> next = add2 ;
+        add2 -> next = next1 ;
+        prev2 -> next = add1 ;
+        add1 -> next = next2 ;
+    }
+   
+  
+    
+    return head;
+    
+}
+

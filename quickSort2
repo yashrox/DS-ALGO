@@ -1,0 +1,54 @@
+
+int partition(int a[], int start, int end) {
+    int minCount = 0;
+    int value = a[start];
+    for (int i=start+1; i<=end; i++) {
+        if (value >= a[i]) {
+            minCount++;
+        }
+    }
+    int pivotLength = start+minCount;
+    a[start] = a[pivotLength];
+    a[pivotLength] = value;
+    
+    int  k = start , j = end;
+    
+    while (k<pivotLength && j > pivotLength) {
+         if (a[k] <= value) {
+            k++;
+        } else if (a[j] > value) {
+            j--;
+        } else {
+            int temp = a[k];
+            a[k] = a[j];
+            a[j] = temp;
+            k++;
+            j--;
+        }
+    }
+
+    return pivotLength;
+}
+
+
+void quickSort1(int a[], int start, int end) {
+    if (start >= end) {
+        return;
+    }
+    int c = partition(a , start, end);
+    quickSort1(a, start, c-1);
+    quickSort1(a, c+1, end);
+}
+
+
+void quickSort(int input[], int size) {
+  /* Don't write main().
+     Don't read input, it is passed as function argument.
+     Change in the given array itself.
+     Taking input and printing output is handled automatically.
+  */
+    if (size == 1 || size == 0) {
+        return ;
+    }
+	quickSort1(input, 0 , size-1);
+}

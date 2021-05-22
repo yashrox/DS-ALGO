@@ -1,0 +1,41 @@
+void merge(int a[], int start, int end) {
+    int length = end - start;
+    int newA[length];
+    int mid = (start + end)/2;
+    int i=start, j=mid+1, k=0;
+    while (i<=mid && j<=end) {
+        if (a[i] < a[j]) {
+            newA[k++] = a[i++];
+        } else {
+            newA[k++] = a[j++];
+        }
+    }
+    while (i<=mid) {
+        newA[k++] = a[i++];
+    }
+    while (j<=end) {
+        newA[k++] = a[j++];
+    }
+    
+    for (int m=0; m<=length; m++) {
+        a[start+m] = newA[m];
+    }
+    return;
+}
+
+void mergeSort1(int a[], int start, int end) {
+    if (start >= end) {
+        return;
+    }
+    int mid = (start + end) / 2 ;
+    mergeSort1(a, start, mid);
+    mergeSort1(a, mid+1, end);
+    merge(a, start,end);
+    return;
+}
+
+
+void mergeSort(int input[], int size){
+	// Write your code here
+       mergeSort1(input, 0 , size-1); 
+}
