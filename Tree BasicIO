@@ -95,6 +95,27 @@ void printree(TreeNode* root) {
     }
 }
 
+int height(TreeNode* root) {
+    if (root == NULL) {
+        return 0;
+    }
+    int ans = 0;
+    for (int i=0; i<root->children.size(); i++) {
+    int value = height(root->children[i]);
+    ans = max(ans , value);
+    }
+    return ans + 1;
+}
+
+void depthOfNode(TreeNode* root, int k) {
+    if (k == 0) {
+        cout<<root->data<<endl;
+    }
+    for (int i=0; i<root->children.size(); i++) {
+        depthOfNode(root->children[i], k-1);
+    }
+}
+
 int main()
 {
 
