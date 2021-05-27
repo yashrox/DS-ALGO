@@ -1,0 +1,137 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+class BinaryTreeNode {
+    public: 
+    int data;
+    BinaryTreeNode* left;
+    BinaryTreeNode* right;
+    BinaryTreeNode(int data) {
+        this->data = data;
+        left = NULL;
+        right = NULL;
+    }
+    ~BinaryTreeNode() {
+        delete left;
+        delete right;
+    }
+};
+
+BinaryTreeNode* takeInputLevel() {
+    int rootData;
+    cout<<"Enter root data"<<endl;
+    cin>>rootData;
+    BinaryTreeNode* root = new BinaryTreeNode(rootData);
+    queue<BinaryTreeNode*> q;
+    q.push(root);
+    while (!q.empty()) {
+        BinaryTreeNode* child = q.front();
+        q.pop();
+        int left , right;
+        cout<<"Enter Left Data "<<child->data;
+        cin>>left;
+        if (left != -1) {
+            BinaryTreeNode* leftChild = new BinaryTreeNode(left);
+            q.push(leftChild);
+            child->left = leftChild;
+        }
+        cout<<"enter right data "<<child->data;
+        cin>>right;
+        if (right != -1) {
+            BinaryTreeNode* rightChild = new BinaryTreeNode(right);
+            q.push(rightChild);
+            child->right = rightChild;
+        }
+        
+    }
+    return root;
+}
+
+void printInputLevel(BinaryTreeNode* root) {
+    queue<BinaryTreeNode*> completeNodes;
+    completeNodes.push(root);
+    while(!completeNodes.empty()){
+        BinaryTreeNode* temp = completeNodes.front();
+        completeNodes.pop();
+        BinaryTreeNode* left  = temp->left;
+        BinaryTreeNode* right = temp->right;
+        cout<<temp->data<<":";
+        if(left != NULL){
+        	completeNodes.push(temp->left);
+            cout<<"L"<<":"<<left->data<<",";
+        }else{
+            cout<<"L:-1,";
+        }
+        if(right != NULL){
+        	completeNodes.push(temp->right);    
+        	cout<<"R:"<<right->data;
+        }else{
+        cout<<"R:-1";
+        }
+        cout<<endl;
+    }
+}
+
+void mirrorImage(BinaryTreeNode* root) {
+    if (root == NULL) {
+        return;
+    }
+    BinaryTreeNode* temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+    
+    mirrorImage(root->left);
+    mirrorImage(root->right);
+    
+    return ;
+}
+
+int height(BinaryTreeNode<int> *root) {
+    if(root == NULL){
+        return 0 ;
+    }
+    
+    int left = height(root->left);
+    int right = height(root->right);
+    
+    return 1 + max(left , right);
+
+}
+
+bool isNodePresent(BinaryTreeNode<int>* root, int x) {
+    if(root == NULL){
+        return false ;
+    }	
+    
+    if(root -> data == x){
+        return true ;
+    }
+
+       bool left =  isNodePresent(root->left , x);
+        bool right = isNodePresent(root->right , x);
+    	return left || right ;
+    
+}
+
+int main()
+{
+    BinaryTreeNode* root = takeInputLevel();
+    cout<<endl<<endl;
+    printInputLevel(root);
+    cout<<endl<<endl;
+    mirrorImage(root);
+    printInputLevel(root);
+    cout<<endl<<endl;
+    delete root;
+    // 8 3 10 1 6 -1 14 -1 -1 4 7 13 -1 -1 -1 -1 -1 -1 -1
+    return 0;
+}
