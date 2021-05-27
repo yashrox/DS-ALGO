@@ -147,21 +147,74 @@ void postOrder(BinaryTreeNode* root) {
     cout<<root->data<<" ";
 }
 
+// BinaryTreeNode* inorderToPost(int inorder[], int preOrder[], int inS, int inE, int preS, int preE) {
+//     if (inS == inE && preS == preE) {
+//         BinaryTreeNode* child = new BinaryTreeNode(inorder[inS]);
+//         return child;
+//     }
+//     int value = preOrder[0];
+//     int i=inS;
+//     for (; i<=inE; i++) {
+//         if (value == inorder[i]) {
+//             break;
+//         }
+//     }
+//      BinaryTreeNode* root = new BinaryTreeNode(value);
+//      int leftLength = i - inS ;
+//      if (leftLength > 0) {
+//       root->left = inorderToPost(inorder, preOrder, inS, i-1, preS + 1, preS + leftLength);   
+//      }
+//      int rightLength = inE - i;
+//      if (rightLength > 0) {
+//          int send = (preS + leftLength + 1);
+//          root->right = inorderToPost(inOrder, preOrder, i+1, inE, send, preE);
+//      } 
+//     return root;    
+// }
+
+// we can use static variable here to store value at once and its value is not intialized after every recursion call.
+BinaryTreeNode* inorderToPost(int inorder[], int preOrder[], int s , int e) {
+    if (s > e) {
+        return NULL;
+    }
+    int i=s;
+    for (; i<=e; i++) {
+        if (preOrder[0] == inorder[i]) {
+            break;
+        }
+    }
+    int lengthInc = i - s;
+    BinaryTreeNode* root = new BinaryTreeNode(preOrder[0]);
+    root->left = inorderToPost(inorder, preOrder+1, s , i-1);
+    root->right = inorderToPost(inorder, preOrder+1+lengthInc, i+1 ,e);
+    return root;
+}
+
 int main()
 {
-    BinaryTreeNode* root = takeInputLevel();
-    cout<<endl<<endl;
-    printInputLevel(root);
-    cout<<endl<<endl;
+    // BinaryTreeNode* root = takeInputLevel();
+    // cout<<endl<<endl;
+    // printInputLevel(root);
+    // cout<<endl<<endl;
     // mirrorImage(root);
     // printInputLevel(root);
-    inOrder(root);
-    cout<<endl<<endl;
-    preOrder(root);
-    cout<<endl<<endl;
-    postOrder(root);
+    // inOrder(root);
+    // cout<<endl<<endl;
+    // preOrder(root);
+    // cout<<endl<<endl;
+    // postOrder(root);
+    int n = 7;
+    int preOrder[] = {1, 2, 4, 5, 3, 6, 7}; 
+    int inorder[]  = {4, 2, 5, 1, 6, 3, 7}; 
+    BinaryTreeNode* root = inorderToPost(inorder, preOrder, 0 , n-1);
+    printInputLevel(root);
+    
     delete root;
     // 8 3 10 1 6 -1 14 -1 -1 4 7 13 -1 -1 -1 -1 -1 -1 -1
     return 0;
 }
+
+1 
+2 3 
+4 5 6 7 
 
