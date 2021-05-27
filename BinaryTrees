@@ -172,8 +172,7 @@ void postOrder(BinaryTreeNode* root) {
 //     return root;    
 // }
 
-// we can use static variable here to store value at once and its value is not intialized after every recursion call.
-BinaryTreeNode* inorderToPost(int inorder[], int preOrder[], int s , int e) {
+BinaryTreeNode* inorderToPre(int inorder[], int preOrder[], int s , int e) {
     if (s > e) {
         return NULL;
     }
@@ -190,9 +189,48 @@ BinaryTreeNode* inorderToPost(int inorder[], int preOrder[], int s , int e) {
     return root;
 }
 
+BinaryTreeNode<int>* inorderToPost(int* inorder, int* postOrder, int s , int e, int n) {
+    if (s > e) {
+        return NULL;
+    }
+    int i=s;
+    for (; i<=e; i++) {
+        if (postOrder[n] == inorder[i]) {
+            break;
+        }
+    }
+    int lengthInc = e - i;
+    BinaryTreeNode<int>* root = new BinaryTreeNode<int>(postOrder[n]);
+    root->right = inorderToPost(inorder, postOrder, i+1 ,e, n-1);
+    root->left = inorderToPost(inorder, postOrder, s , i-1, n-1-lengthInc);
+    
+    return root;
+}
+
+// Code with static key 
+// BinaryTreeNode<int>* treeHelper(int* preorder , int* inorder , int start , int end){
+//     if(start > end){
+//         return NULL ;
+//     }
+    
+//     static int preIndex = end ;
+    
+//     BinaryTreeNode<int>* root = new BinaryTreeNode<int>(preorder[preIndex--]);
+    
+//     int index = search(root->data , inorder , start , end);
+    
+//     BinaryTreeNode<int>* rightTree = treeHelper(preorder , inorder , index+1  , end);
+//     BinaryTreeNode<int>* leftTree = treeHelper(preorder , inorder , start , index - 1);
+    
+//     root -> left = leftTree ;
+//     root -> right = rightTree ; 
+    
+//     return root ;
+// }
+
 int main()
 {
-    // BinaryTreeNode* root = takeInputLevel();
+    BinaryTreeNode* root = takeInputLevel();
     // cout<<endl<<endl;
     // printInputLevel(root);
     // cout<<endl<<endl;
@@ -203,10 +241,11 @@ int main()
     // preOrder(root);
     // cout<<endl<<endl;
     // postOrder(root);
-    int n = 7;
-    int preOrder[] = {1, 2, 4, 5, 3, 6, 7}; 
-    int inorder[]  = {4, 2, 5, 1, 6, 3, 7}; 
-    BinaryTreeNode* root = inorderToPost(inorder, preOrder, 0 , n-1);
+    // int n = 7;
+    // int preOrder[] = {1, 2, 4, 5, 3, 6, 7}; 
+    // int inorder[]  = {4, 2, 5, 1, 6, 3, 7}; 
+   // BinaryTreeNode* root = inorderToPre(inorder, preOrder, 0 , n-1);
+    //  BinaryTreeNode* root = inorderToPost(inorder, preOrder, 0 , n-1);
     printInputLevel(root);
     
     delete root;
@@ -217,4 +256,3 @@ int main()
 1 
 2 3 
 4 5 6 7 
-
