@@ -172,40 +172,40 @@ void postOrder(BinaryTreeNode* root) {
 //     return root;    
 // }
 
-BinaryTreeNode* inorderToPre(int inorder[], int preOrder[], int s , int e) {
-    if (s > e) {
-        return NULL;
-    }
-    int i=s;
-    for (; i<=e; i++) {
-        if (preOrder[0] == inorder[i]) {
-            break;
-        }
-    }
-    int lengthInc = i - s;
-    BinaryTreeNode* root = new BinaryTreeNode(preOrder[0]);
-    root->left = inorderToPost(inorder, preOrder+1, s , i-1);
-    root->right = inorderToPost(inorder, preOrder+1+lengthInc, i+1 ,e);
-    return root;
-}
+// BinaryTreeNode* inorderToPre(int inorder[], int preOrder[], int s , int e) {
+//     if (s > e) {
+//         return NULL;
+//     }
+//     int i=s;
+//     for (; i<=e; i++) {
+//         if (preOrder[0] == inorder[i]) {
+//             break;
+//         }
+//     }
+//     int lengthInc = i - s;
+//     BinaryTreeNode* root = new BinaryTreeNode(preOrder[0]);
+//     root->left = inorderToPost(inorder, preOrder+1, s , i-1);
+//     root->right = inorderToPost(inorder, preOrder+1+lengthInc, i+1 ,e);
+//     return root;
+// }
 
-BinaryTreeNode<int>* inorderToPost(int* inorder, int* postOrder, int s , int e, int n) {
-    if (s > e) {
-        return NULL;
-    }
-    int i=s;
-    for (; i<=e; i++) {
-        if (postOrder[n] == inorder[i]) {
-            break;
-        }
-    }
-    int lengthInc = e - i;
-    BinaryTreeNode<int>* root = new BinaryTreeNode<int>(postOrder[n]);
-    root->right = inorderToPost(inorder, postOrder, i+1 ,e, n-1);
-    root->left = inorderToPost(inorder, postOrder, s , i-1, n-1-lengthInc);
+// BinaryTreeNode<int>* inorderToPost(int* inorder, int* postOrder, int s , int e, int n) {
+//     if (s > e) {
+//         return NULL;
+//     }
+//     int i=s;
+//     for (; i<=e; i++) {
+//         if (postOrder[n] == inorder[i]) {
+//             break;
+//         }
+//     }
+//     int lengthInc = e - i;
+//     BinaryTreeNode<int>* root = new BinaryTreeNode<int>(postOrder[n]);
+//     root->right = inorderToPost(inorder, postOrder, i+1 ,e, n-1);
+//     root->left = inorderToPost(inorder, postOrder, s , i-1, n-1-lengthInc);
     
-    return root;
-}
+//     return root;
+// }
 
 // Code with static key 
 // BinaryTreeNode<int>* treeHelper(int* preorder , int* inorder , int start , int end){
@@ -228,6 +228,86 @@ BinaryTreeNode<int>* inorderToPost(int* inorder, int* postOrder, int s , int e, 
 //     return root ;
 // }
 
+// vector<Node<int>*> linkListLevel(BinaryTreeNode<int>* root) {
+//     vector<Node<int>*> v;
+    
+//     if (root == NULL) {
+//         return v;
+//     }
+//     queue<pair<BinaryTreeNode<int>* , int>> q;
+//     q.push(make_pair(root , 1));
+//     int currentIndex = 0;
+    
+    
+//     Node<int>* next = NULL;
+//     while (!q.empty()) {
+//         pair<BinaryTreeNode<int>*, int> rootData = q.front();
+//         q.pop();
+//         if (rootData.second != currentIndex) {
+//              next = new Node<int>(rootData.first->data);
+//             v.push_back(next);
+//             currentIndex++;
+//         } else {
+//             Node<int>* tempNext = new Node<int>(rootData.first->data);
+//             next->next = tempNext;
+//             next = tempNext;
+//         }
+//         if (rootData.first->left) {
+//         	q.push(make_pair(rootData.first->left , rootData.second + 1));    
+//         }
+//         if (rootData.first->right) {
+//       	 q.push(make_pair(rootData.first->right , rootData.second + 1));     
+//         }
+//     }
+//     return v;
+// }
+
+pair<vector<int>, int> maxRootToLeaf(BinaryTreeNode* root) {
+    if (root == NULL) {
+        pair<vector<int>, int> p;
+        vector<int> childV;
+        p.first = childV;
+        p.second = 0;
+        return p;
+    }
+    
+    pair<vector<int>, int> left = maxRootToLeaf(root->left);
+    pair<vector<int>, int> right = maxRootToLeaf(root->right);
+
+    
+    if (left.second > right.second) {
+        left.second += 1;
+        left.first.push_back(root->data);
+        return left;
+    } else {
+            right.second += 1;
+        right.first.push_back(root->data);
+        return right;
+    }
+}
+
+
+int heightFunction(char str[] , int &i ){  // nll , nlnll => check height of preorder
+
+    if(str[i] == '\0'){
+        return 0;
+    }
+    
+    
+    
+    if(str[i] != 'n'){
+		return 1 ;    
+    }
+    
+    
+    int leftHeight = 1 + heightFunction(str , ++i );
+    int rightHeight = 1 + heightFunction(str , ++i);
+
+    
+    return max(leftHeight , rightHeight) ;
+    
+}
+
 int main()
 {
     BinaryTreeNode* root = takeInputLevel();
@@ -247,12 +327,18 @@ int main()
    // BinaryTreeNode* root = inorderToPre(inorder, preOrder, 0 , n-1);
     //  BinaryTreeNode* root = inorderToPost(inorder, preOrder, 0 , n-1);
     printInputLevel(root);
-    
+    cout<<endl<<endl;
+    pair<vector<int>, int> p = maxRootToLeaf(root);
+    cout<<p.second<<endl;
+    vector<int> result = p.first;
+    for (int i = 0; i<=(result.size() - 1) ; i++) {
+        cout<<result[i]<<" ";
+    }
     delete root;
     // 8 3 10 1 6 -1 14 -1 -1 4 7 13 -1 -1 -1 -1 -1 -1 -1
     return 0;
 }
 
-1 
-2 3 
-4 5 6 7 
+// 1 
+// 2 3 
+// 4 5 6 7 
