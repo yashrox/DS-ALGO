@@ -383,7 +383,64 @@ int heightFunction(char str[] , int &i ){  // nll , nlnll => check height of pre
 //     return root->data + max(left,right);
 // }
 
-
+void
+printSpecificPattern (BinaryTreeNode * root)
+{
+  if (root == NULL)
+    {
+      return;
+    }
+    
+  int index = 0;
+  queue < pair < BinaryTreeNode *, int >>q;
+  
+  vector < int >v;
+  q.push(make_pair(root , 1));
+  while (!q.empty ())
+    {
+      pair < BinaryTreeNode *, int >childData = q.front ();
+      q.pop ();
+     
+      if (childData.second != index)
+	{
+	  index++;
+	  int size = v.size ();
+	  if (size == 1)
+	    {
+	      cout << v[0] << " ";
+	    }
+	  else
+	    {
+	       int n = size/2;
+	      for (int i = 0; i < n; i++)
+		{
+		  cout << v[i] << " ";
+		  cout << v[size - 1 - i] << " ";
+		}
+	    }
+	    v.clear();
+	  v.push_back (childData.first->data);
+	} else {
+	    v.push_back (childData.first->data);    
+	} 
+	
+    if (childData.first->left)
+	{
+	  q.push (make_pair (childData.first->left, childData.second + 1));
+	}
+      if (childData.first->right)
+	{
+	  q.push (make_pair (childData.first->right, childData.second + 1));
+	}
+    }
+        int size = v.size ();
+         int n = size/2;
+	      for (int i = 0; i < n; i++)
+		{
+		  cout << v[i] << " ";
+		  cout << v[size - 1 - i] << " ";
+		}
+}
 
 int main()
 {
