@@ -37,14 +37,14 @@ BinaryTreeNode* takeInputLevel() {
         BinaryTreeNode* child = q.front();
         q.pop();
         int left , right;
-        cout<<"Enter Left Data "<<child->data;
+        cout<<"Enter Left Data "<<child->data<<endl;
         cin>>left;
         if (left != -1) {
             BinaryTreeNode* leftChild = new BinaryTreeNode(left);
             q.push(leftChild);
             child->left = leftChild;
         }
-        cout<<"enter right data "<<child->data;
+        cout<<"enter right data "<<child->data<<endl;
         cin>>right;
         if (right != -1) {
             BinaryTreeNode* rightChild = new BinaryTreeNode(right);
@@ -308,6 +308,83 @@ int heightFunction(char str[] , int &i ){  // nll , nlnll => check height of pre
     
 }
 
+
+// Boundary Traversal 
+
+// void leftRoot(BinaryTreeNode<int>* root) {
+//     if (root == NULL) {
+//         return ;
+//     }
+    
+//     if (root->left) {
+//         cout<<root->data<<" ";
+//         leftRoot(root->left);
+//     } else if (root->right) {
+//         cout<<root->data<<" ";
+//         leftRoot(root->right);
+//     }
+//     return;
+// }
+
+// void rightRoot(BinaryTreeNode<int>* root) {
+//     if (root == NULL) {
+//         return ;
+//     }
+    
+//     if (root->right) {
+//         rightRoot(root->right);
+//         cout<<root->data<<" ";
+//     } else if (root->left) {
+//         rightRoot(root->left);
+//         cout<<root->data<<" ";
+//     }
+//     return;
+// }
+
+// void leaf(BinaryTreeNode<int>* root) {
+//     if (root == NULL) {
+//         return;
+//     }
+    
+//     if (!root->left && !root->right) {
+//         cout<<root->data<<" ";
+//     }
+//     leaf(root->left);
+//     leaf(root->right);
+// }
+
+// void solve(BinaryTreeNode<int>* root){
+//     	/* Don't write main().
+// 	* Don't read input, it is passed as function argument.
+// 	*/
+// 	if (root == NULL) {
+//         return;
+//     }
+//     cout<<root->data<<" ";
+//     leftRoot(root->left);
+//     leaf(root);
+//     rightRoot(root->right);
+// }
+
+// int maxDistanceLeave(BinaryTreeNode* root , int& maxVal) {
+//     if (root == NULL) {
+//         return 0;
+//     }
+    
+//     int left = maxDistanceLeave(root->left);
+//     int right = maxDistanceLeave(root->right);
+    
+//     int value = left + right + root->data;
+    
+//     if (value > maxVal) {
+//         maxVal = value;
+//     }
+    
+//     return root->data + max(left,right);
+// }
+
+
+
 int main()
 {
     BinaryTreeNode* root = takeInputLevel();
@@ -328,12 +405,12 @@ int main()
     //  BinaryTreeNode* root = inorderToPost(inorder, preOrder, 0 , n-1);
     printInputLevel(root);
     cout<<endl<<endl;
-    pair<vector<int>, int> p = maxRootToLeaf(root);
-    cout<<p.second<<endl;
-    vector<int> result = p.first;
-    for (int i = 0; i<=(result.size() - 1) ; i++) {
-        cout<<result[i]<<" ";
-    }
+    // pair<vector<int>, int> p = maxRootToLeaf(root);
+    // cout<<p.second<<endl;
+    // vector<int> result = p.first;
+    // for (int i = 0; i<=(result.size() - 1) ; i++) {
+    //     cout<<result[i]<<" ";
+    // }
     delete root;
     // 8 3 10 1 6 -1 14 -1 -1 4 7 13 -1 -1 -1 -1 -1 -1 -1
     return 0;
