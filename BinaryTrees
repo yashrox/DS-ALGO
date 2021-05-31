@@ -442,6 +442,61 @@ printSpecificPattern (BinaryTreeNode * root)
 		}
 }
 
+int maxLeftBinary(BinaryTreeNode* root) {
+    if (root == NULL) {
+        return INT_MIN;
+    }
+    
+    return max(root->data , max(maxLeftBinary(root->left), maxLeftBinary(root->right)));
+}
+
+int minRightBinary(BinaryTreeNode* root) {
+    if (root == NULL) {
+        return INT_MAX;
+    }
+    return min(root->data, min(minRightBinary(root->left), minRightBinary(root->right)));
+}
+
+bool IsBst(BinaryTreeNode* root) {
+    if (root == NULL) {
+        return true;
+    }
+    
+    int leftMax = maxLeftBinary(root->left);
+    int rightMin = minRightBinary(root->right);
+    
+    return (root->data > leftMax) && (root->data <= rightMin) && IsBst(root->left) && IsBst(root->right);
+}
+
+
+class BstTemplate {
+    public: 
+    int max;
+    int min;
+    bool isBst;
+};
+
+BstTemplate* IsBstOPtimized(BinaryTreeNode* root) {
+    if (root == NULL) {
+        BstTemplate * obj = new BstTemplate();
+        obj->max = INT_MIN;
+        obj->min = INT_MAX;
+        obj->isBst = true;
+        return obj;
+    }
+    
+    BstTemplate* leftMax = IsBstOPtimized(root->left);
+    BstTemplate* rightMin = IsBstOPtimized(root->right);
+    
+    BstTemplate* rootData = new BstTemplate();
+    
+    rootData->isBst = (root->data > leftMax->max) && (root->data <= rightMin->min) && leftMax->isBst && rightMin->isBst;
+    rootData->max = max(root->data, max(leftMax->max, rightMin->max));
+    rootData->min = min(root->data, min(rightMin->min, leftMax->min));
+    return rootData;
+}
+
+
 int main()
 {
     BinaryTreeNode* root = takeInputLevel();
