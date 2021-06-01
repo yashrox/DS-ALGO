@@ -496,6 +496,103 @@ BstTemplate* IsBstOPtimized(BinaryTreeNode* root) {
     return rootData;
 }
 
+bool BST2(BinaryTreeNode *root , int minValue , int maxValue) {
+    if (root == NULL) {
+        return true;
+    }
+    if (root->data < minValue || root->data > maxValue) {
+        return false;
+    }
+    bool leftOk = true , rightOk = true;
+    if (root->left) {
+        leftOk =  BST2(root->left, minValue, root->data - 1);
+    }
+    if (root->right) {
+        rightOk =  BST2(root->right, root->data, maxValue);
+    }
+    return leftOk && rightOk;
+}
+
+BinaryTreeNode* BSTFromSortedArray(int a[], int start , int end) {
+    if (start > end) {
+        return NULL;
+    }
+    if (start == end) {
+        BinaryTreeNode* childData = new BinaryTreeNode(a[start]);
+        return childData;
+    }
+    int mid = (start + end)/2;
+
+    BinaryTreeNode* left = BSTFromSortedArray(a, start, mid - 1);
+    BinaryTreeNode* right = BSTFromSortedArray(a, mid+1, end);
+    
+    BinaryTreeNode* rootData = new BinaryTreeNode(a[mid]);
+    rootData->left = left;
+    rootData->right = right;
+    return rootData;    
+}
+ 
+class LinkedList {
+    public:
+    int data;
+    LinkedList* next;
+    LinkedList(int data) {
+        this->data = data;
+        next = NULL;
+    }
+};
+
+void BSTLinkedList(BinaryTreeNode* root, LinkedList* &head , LinkedList* &next) {
+    if (root == NULL) {
+     return;   
+    }
+    BSTLinkedList(root->left, head, next);
+    LinkedList* data;
+    if (head == NULL) {
+        data = new LinkedList(root->data);
+        next = data;
+        head = data;
+    } else {
+        data = new LinkedList(root->data);
+        next->next = data;
+        next = data;
+    }
+    BSTLinkedList(root->right, head, next);
+}
+
+vector<int>* rootToNode(BinaryTreeNode* root , int value) {
+    if (root == NULL) {
+        return NULL;
+    }
+    
+    if (root->data == value) {
+        vector<int>* v = new vector<int>(); 
+        v->push_back(root->data);
+        // cout<<root->data<<endl;
+        return v;
+    }
+    
+    if (root->data > value) {
+        vector<int>* v1 = rootToNode(root->left,  value);
+        if (v1) {
+            v1->push_back(root->data);
+            return v1;
+        } else {
+            return NULL;
+        }
+    }
+    
+    if (root->data < value) {
+        vector<int>* v2 = rootToNode(root->right, value);
+        if (v2) {
+            v2->push_back(root->data);
+            return v2;
+        } else {
+            return NULL;
+        }
+    }
+}
+
 
 int main()
 {
