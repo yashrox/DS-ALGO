@@ -1,0 +1,230 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+//****************** Max HEAP *************************//
+
+class PriorityQueue {
+    // Complete this class
+  	public: 
+    vector<int> pq ; 
+    
+    PriorityQueue(){
+        
+    }
+    
+	bool isEmpty(){
+        return pq.size() == 0 ;
+    }
+    
+    int getSize() {
+        return pq.size() ;
+    }
+    
+    int getMax(){
+        if(isEmpty()){
+            return 0 ;
+        }
+        return pq[0];
+    }
+    
+    void insert(int element){
+        pq.push_back(element);
+        int index = pq.size() - 1 ; 
+        
+        while(index > 0){
+            int parentIndex = (index  - 1)/2 ; 
+            
+            if(pq[parentIndex] > pq[index]){
+                break ;
+            }
+            
+            int temp = pq[parentIndex] ;
+            pq[parentIndex] = pq[index] ;
+            pq[index] = temp ; 
+            
+            index = parentIndex ; 
+            
+        }
+        
+    }
+    
+    int removeMax(){
+        if(isEmpty()){
+            return 0 ; 
+        }
+        int ans  = pq[0] ; 
+        pq[0] = pq[pq.size() - 1];
+        pq.pop_back();
+        
+        int parentIndex = 0 ; 
+        int leftIndex = 2*parentIndex + 1 ;
+		int rightIndex = 2*parentIndex + 2 ;
+        
+        while(leftIndex < pq.size()){
+            int  maxIndex = parentIndex ; 
+            
+            if(pq[leftIndex] > pq[maxIndex]){
+                maxIndex = leftIndex ;
+            }
+            
+            if(rightIndex < pq.size() && pq[rightIndex] > pq[maxIndex]){
+                maxIndex = rightIndex ;
+            }
+            
+            if(parentIndex == maxIndex){
+                break ;
+            }
+            
+            int temp = pq[maxIndex];
+            pq[maxIndex] = pq[parentIndex];
+            pq[parentIndex] = temp ;
+            
+            parentIndex = maxIndex ; 
+            leftIndex = 2*parentIndex + 1 ;
+            rightIndex = 2*parentIndex + 2 ;
+            
+        }
+        
+        return ans ;
+    }
+    
+    
+};
+
+
+//************ MIN HEAP ******************************************//
+
+class PriorityQueue {
+    // Complete this class
+  	public: 
+    vector<int> pq ; 
+    
+    PriorityQueue(){
+        
+    }
+    
+	bool isEmpty(){
+        return pq.size() == 0 ;
+    }
+    
+    int getSize() {
+        return pq.size() ;
+    }
+    
+    int getMax(){
+        if(isEmpty()){
+            return 0 ;
+        }
+        return pq[0];
+    }
+    
+    void insert(int element){
+        pq.push_back(element);
+        int index = pq.size() - 1 ; 
+        
+        while(index > 0){
+            int parentIndex = (index  - 1)/2 ; 
+            
+            if(pq[parentIndex] > pq[index]){
+                break ;
+            }
+            
+            int temp = pq[parentIndex] ;
+            pq[parentIndex] = pq[index] ;
+            pq[index] = temp ; 
+            
+            index = parentIndex ; 
+            
+        }
+        
+    }
+    
+    int removeMax(){
+        if(isEmpty()){
+            return 0 ; 
+        }
+        int ans  = pq[0] ; 
+        pq[0] = pq[pq.size() - 1];
+        pq.pop_back();
+        
+        int parentIndex = 0 ; 
+        int leftIndex = 2*parentIndex + 1 ;
+		int rightIndex = 2*parentIndex + 2 ;
+        
+        while(leftIndex < pq.size()){
+            int  maxIndex = parentIndex ; 
+            
+            if(pq[leftIndex] > pq[maxIndex]){
+                maxIndex = leftIndex ;
+            }
+            
+            if(rightIndex < pq.size() && pq[rightIndex] > pq[maxIndex]){
+                maxIndex = rightIndex ;
+            }
+            
+            if(parentIndex == maxIndex){
+                break ;
+            }
+            
+            int temp = pq[maxIndex];
+            pq[maxIndex] = pq[parentIndex];
+            pq[parentIndex] = temp ;
+            
+            parentIndex = maxIndex ; 
+            leftIndex = 2*parentIndex + 1 ;
+            rightIndex = 2*parentIndex + 2 ;
+            
+        }
+        
+        return ans ;
+    }
+    
+    
+};
+
+
+int main() {
+    PriorityQueue pq;
+    int choice;
+    cin >> choice;
+    while(choice != -1) {
+        switch(choice) {
+            case 1 : // insert
+                int element;
+                cin >> element;
+                pq.insert(element);
+                break;
+            case 2 : // getMax
+                cout << pq.getMax() << endl;
+                break;
+            case 3 : // removeMax
+                cout << pq.removeMax() << endl;
+                break;
+            case 4 : // size
+                cout << pq.getSize() << endl;
+                break;
+            case 5 : // isEmpty
+                if(pq.isEmpty()) {
+                    cout << "true" << endl;
+                }
+                else {
+                    cout << "false" << endl;
+                }
+            default :
+                return 0;
+        }
+        cin >> choice;
+    }
+}
+
+
