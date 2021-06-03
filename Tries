@@ -1,0 +1,154 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+// #include "TrieNode.h"
+#include <string>
+#include <vector>
+class TrieNode {
+	public :
+	char data;
+	TrieNode **children;
+	bool isTerminal;
+
+	TrieNode(char data) {
+		this -> data = data;
+		children = new TrieNode*[26];
+		for(int i = 0; i < 26; i++) {
+			children[i] = NULL;
+		}
+		isTerminal = false;
+	}
+};
+
+class Trie {
+	TrieNode *root;
+
+	public :
+	int count;
+
+	Trie() {
+		this->count = 0;
+		root = new TrieNode('\0');
+	}
+
+	bool insertWord(TrieNode *root, string word) {
+		// Base case
+		if(word.size() == 0) {
+			if (!root->isTerminal) {
+				root -> isTerminal = true;
+				return true;	
+			} else {
+				return false;
+			}
+		}
+
+		// Small Calculation
+		int index = word[0] - 'a';
+		TrieNode *child;
+		if(root -> children[index] != NULL) {
+			child = root -> children[index];
+		}
+		else {
+			child = new TrieNode(word[0]);
+			root -> children[index] = child;
+		}
+
+		// Recursive call
+		return insertWord(child, word.substr(1));
+	}
+
+	// For user
+	void insertWord(string word) {
+		if (insertWord(root, word)) {
+			this->count++;
+		}
+	}
+
+    void insertSuffix(string word){
+        if(word.size() == 0){
+            return  ; 
+        }
+        
+        insertWord(word) ;
+        
+        insertSuffix(word.substr(1));
+        
+    }
+    
+    bool patterns(TrieNode* root , string pattern){
+        if(pattern.size() == 0){
+            return true ;
+        }
+        
+        int index = pattern[0] - 'a' ;
+        if(root->children[index] == NULL){
+            return false ;
+        }
+        
+        return patterns(root->children[index] , pattern.substr(1));
+        
+    }
+    
+	bool patternMatching(vector<string> vect, string pattern) {
+		// Complete this function
+		// Return true or false
+
+        	for(int i=0 ; i<vect.size() ; i++){
+                insertSuffix(vect[i]);
+            }
+        
+        return patterns(root , pattern) ;
+        
+	}
+	
+	    TrieNode* findPattern(TrieNode* root , string pattern){
+		if(pattern.size() == 0){
+            return root ;
+        }        
+        int index = pattern[0] - 'a' ;
+        if(root->children[index] == NULL){
+            return NULL ;
+        }
+        return findPattern(root->children[index] , pattern.substr(1));
+    }
+    
+    
+    void autoCompletePattern(TrieNode* root , string output) {
+        TrieNode* child ; 
+        for(int i=0 ; i<26; i++ ){
+            if(root->children[i] != NULL){
+                autoCompletePattern(root->children[i] , output + root->children[i]->data);
+            }
+        }
+        if(root->isTerminal == true){
+        cout<<output<<endl;
+    
+        }
+                
+        return ;
+    }
+    
+    
+    void autoComplete(vector<string> input, string pattern) {
+        // Complete this function
+        // Print the output as specified in question
+    	
+     
+        for(int i=0 ; i<input.size() ; i++){
+            insertWord(input[i]);
+        }
+        
+        TrieNode * patternRoot = findPattern(root , pattern);
+        if(patternRoot == NULL){
+            return;
+        }
+        autoCompletePattern(patternRoot , pattern);
+    }
+};
+
+
