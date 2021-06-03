@@ -1,0 +1,143 @@
+/******************************************************************************
+
+Welcome to GDB Online.
+GDB online is an online compiler and debugger tool for C, C++, Python, PHP, Ruby, 
+C#, VB, Perl, Swift, Prolog, Javascript, Pascal, HTML, CSS, JS
+Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
+#include <stdio.h>
+
+
+void insertArrange(int input[] , int i ,  int n){
+    
+    if(i == n){
+        return ; 
+    }
+    
+    int savedI = i ;
+    
+    while(i>0){
+    	
+        int parentIndex = (i - 1)/2 ; 
+        
+        if(input[parentIndex] < input[i]){
+            break ;
+        }
+        
+        int temp = input[parentIndex] ;
+        input[parentIndex] = input[i] ;
+        input[i] = temp ;
+        
+        i = parentIndex ; 
+        
+    }
+    
+    insertArrange(input , savedI+1 , n);
+    
+}
+
+void remove(int input[] , int n){
+    
+    if(n == 0){
+        return ; 
+    }
+    
+    int temp = input[n] ; 
+    input[n] = input[0] ;
+    input[0] = temp ;
+     
+    
+    int parentIndex = 0 ;
+    int leftIndex = 2*parentIndex + 1 ;
+    int rightIndex = 2*parentIndex + 2 ;
+    
+    while(leftIndex < n ){
+        
+        int minIndex = parentIndex ;
+       
+        if(input[minIndex] > input[leftIndex]){
+        	minIndex = leftIndex ;     
+        }
+        
+        if(rightIndex < n && input[minIndex] > input[rightIndex]){
+            minIndex = rightIndex;
+        }
+        
+        if(parentIndex == minIndex){
+            break ;
+        }
+        
+        int temp1 = input[minIndex] ;
+        input[minIndex] = input[parentIndex];
+        input[parentIndex] = temp1 ;
+        
+        parentIndex = minIndex ;
+        leftIndex = 2*parentIndex + 1 ;
+    	rightIndex = 2*parentIndex + 2 ;
+    }
+    
+    remove(input , --n);
+    
+}
+
+void inplaceHeapSort(int input[], int n){
+    /* Don't write main().
+     * Don't read input, it is passed as function argument.
+     * Change in the given input itself.
+     * Taking input and printing output is handled automatically.
+     */
+
+    if(n == 0){
+        return ;
+    }
+    
+   insertArrange(input , 1  , n);
+	remove(input , n-1);    
+
+    return ;
+}
+
+
+/******** k smallest element using prioity queue ***************/
+
+vector<int> kSmallest(int *input, int n, int k) {
+	// Write your code here
+
+    priority_queue<int> pq ; 
+    
+    vector<int> v ;
+    
+    for(int i=0 ; i<k ; i++ ){
+        pq.push(input[i]);
+    }
+    
+    for(int i=k ; i<n ; i++){
+        int elemTop = pq.top() ;
+        
+        if(elemTop > input[i]){
+            pq.pop();
+            pq.push(input[i]);
+        }
+    }
+    
+    while(!pq.empty()){
+        v.push_back(pq.top());
+        pq.pop();
+    }
+    
+    return v ;
+    
+}
+
+
+int main()
+{
+    int input[6] = { 2 ,  6 ,  8 ,  5 ,  4  , 3} ;
+    
+    inplaceHeapSort(input , 6);
+
+    return 0;
+}
+
+
