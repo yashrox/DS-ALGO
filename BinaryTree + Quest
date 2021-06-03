@@ -1,0 +1,221 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+#include <queue>
+#include <map> 
+#include <vector>
+
+using namespace std;
+
+template <typename T>
+class BinaryTreeNode {
+    public: 
+    T data ;
+    BinaryTreeNode<T> *left = NULL ;
+    BinaryTreeNode<T>* right = NULL ;
+    
+    BinaryTreeNode(T data){
+        this->data  = data ; 
+    }
+    
+};
+
+class BinaryTreeFunction {
+    
+    private: 
+    
+    map<int , vector<int>> vertcialLookBinaryTree(BinaryTreeNode<int>* root , int horizatal , map<int  ,vector<int>> m){
+        if(root == NULL){
+            return m ;
+        }
+        
+        if(m.count(horizatal) > 0){
+         vector<int> v =  m[horizatal];
+         v.push_back(root->data);
+         m[horizatal] = v;
+        }else{
+            vector<int> v ;
+            v.push_back(root->data);
+           m[horizatal] =  v ;
+        }
+        
+        map<int , vector<int>> leftMap = vertcialLookBinaryTree(root->left , horizatal - 1  , m);
+        map<int , vector<int>> rightMap = vertcialLookBinaryTree(root->right , horizatal+1 , leftMap);
+        
+        return rightMap ;
+        
+    }
+    
+    map<int , int> topViewBinaryTree(BinaryTreeNode<int>* root , map<int , int> m){
+        
+        if(root == NULL){
+            return m ;
+        }
+        
+        int h = 0 ;
+        queue<pair<BinaryTreeNode<int>*,int>> q ;
+        q.push(make_pair(root , h));
+        
+        while(!q.empty()){
+        pair<BinaryTreeNode<int>*,int> temp = q.front();
+        q.pop();
+        BinaryTreeNode<int>* rootClone = temp.first;
+        int horizatal = temp.second ;
+    
+    
+        if(m.find(horizatal) == m.end()){
+            m[horizatal] = rootClone->data ;
+        }
+    
+        if(rootClone->left){
+            q.push(make_pair(rootClone->left , horizatal - 1));
+        }
+        
+        if(rootClone->right){
+            q.push(make_pair(rootClone->right , horizatal + 1));
+        }
+            
+        }
+        
+        return m ; 
+    }
+    
+    public:
+    
+    BinaryTreeNode<int>* insert() {
+    BinaryTreeNode<int>* root ;
+    queue<BinaryTreeNode<int>*> q ;
+    
+    cout<<"Enter the root"<<endl ;
+    int data ;
+    cin>>data ; 
+    BinaryTreeNode<int>* newNode = new BinaryTreeNode<int>(data);
+    root = newNode; 
+    q.push(newNode);
+    
+    while(!q.empty()){
+
+    BinaryTreeNode<int>* root = q.front();
+    q.pop();
+    cout<<"Enter the left child -  "<<root->data<<endl ;
+    cin>>data ;
+    if(data != -1){
+    BinaryTreeNode<int>* leftNode = new BinaryTreeNode<int>(data);
+    root->left = leftNode ;
+    q.push(leftNode);
+    }
+    
+    cout<<"Enter the right child - "<<root->data<<endl ;
+    cin>>data ;
+    if(data != -1){
+    BinaryTreeNode<int>* rightNode = new BinaryTreeNode<int>(data);
+    root->right = rightNode ;
+    q.push(rightNode);
+    }
+    
+    }
+    
+    return root ;
+    }
+
+    void print(BinaryTreeNode<int>* root){
+    queue<BinaryTreeNode<int>*> q ;
+    q.push(root);
+        int leftChild , rightChild ;
+    while(!q.empty()){
+        BinaryTreeNode<int>* root = q.front();
+        q.pop();
+        
+        if(root->left){
+            q.push(root->left);
+            leftChild = root->left->data ;
+        }else{
+            leftChild = -1 ;
+        }
+        
+        if(root->right){
+            q.push(root->right);
+            rightChild = root->right->data ;
+        }else{
+            rightChild = -1 ;
+        }
+        
+        cout<<"Child of "<<root->data<<" - "<< "Left "<<leftChild<<" Right "<<rightChild<<endl;
+    }
+    }
+    
+    vector<int> levelTravesal(BinaryTreeNode<int>* root ){
+        queue<BinaryTreeNode<int>*> q ;
+        vector<int> v ;
+        q.push(root);
+        v.push_back(root->data);
+        
+        
+        while(!q.empty()){
+               BinaryTreeNode<int>* temp = q.front();
+               q.pop();
+               
+               if(temp -> left ){
+                   q.push(root->left);
+                   v.push_back(root->left->data);
+               }
+               
+               if(temp -> right){
+                   q.push(root->right);
+                   v.push_back(root->right->data);
+               }
+        }
+        
+        return v ;
+    }
+
+
+    void verticalLook(BinaryTreeNode<int>* root){
+        map<int , vector<int>> intialValue ;
+    map<int , vector<int>> m  =  vertcialLookBinaryTree(root  , 0 , intialValue);
+    
+    vector<int> v ;
+    
+    for(auto i = m.begin() ; i!=m.end() ; i++){
+        cout<<"first row "<<i->first<<endl;
+         v = i->second;
+        for(int j=0 ; j<v.size();j++){
+            cout<<v[j]<<" " ;
+        }
+        cout<<endl;
+    }
+    
+    }
+    
+    void topView(BinaryTreeNode<int> * root) {
+        map<int , int> m ; 
+        map<int , int> mapValues = topViewBinaryTree(root , m);
+        for(auto i = mapValues.begin() ; i!=mapValues.end() ; i++){
+            cout<<i->second<<" " ; 
+        }
+    }
+
+};
+
+
+
+int main()
+{
+    BinaryTreeFunction BinaryFunction ;
+    BinaryTreeNode<int>* root = BinaryFunction.insert();
+   //BinaryFunction.print(root);
+   //BinaryFunction.verticalLook(root);
+   //cout<<endl<<endl;
+   BinaryFunction.topView(root);
+    
+    return 0;
+}
+
+
+
