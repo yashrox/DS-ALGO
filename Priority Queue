@@ -192,6 +192,53 @@ class PriorityQueue {
     
 };
 
+void sortAscending(int a[], int n , int k) {
+    if (n == 0) {
+        return;
+    }
+    priority_queue<int> pq;
+    
+    for (int i=0; i<k; i++) {
+        pq.push(a[i]);
+    }
+    for (int i=0; i<n; i++) {
+        if (pq.top() > a[i]) {
+            pq.pop();
+            pq.push(a[i]);
+        }
+    }
+    
+    while (!pq.empty()) {
+        cout<<pq.top()<<" ";
+        pq.pop();
+    }
+    
+}
+
+void sortDescending(int a[], int n, int k) {
+    if (n == 0 || k == 0) {
+        return;
+    }
+    
+    priority_queue<int, vector<int>, greater<int>> pq;
+    
+    for (int i=0; i<k; i++) {
+        pq.push(a[i]);
+    }
+    
+    for (int i=k; i<n; i++) {
+        if (a[i] > pq.top()) {
+            pq.pop();
+            pq.push(a[i]);
+        }
+    }
+    
+    while (!pq.empty()) {
+        cout<<pq.top()<<" ";
+        pq.pop();
+    }
+    
+}
 
 int main() {
     PriorityQueue pq;
