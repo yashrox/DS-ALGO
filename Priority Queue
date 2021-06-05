@@ -228,3 +228,58 @@ int main() {
 }
 
 
+// Space complexity = O(1) 
+
+void insertInto(int a[], int n , int j) {
+    if(j>=n) {
+        return;
+    }
+    int i = j;
+    while (i > 0) {
+        if (a[i] < a[(i-1)/2]) {
+            int temp = a[i];
+            a[i] = a[(i-1)/2];
+            a[(i-1)/2] = temp;
+        }
+        i = (i-1)/2;
+    }
+    insertInto(a , n , j+1);
+}
+
+void removeInto(int a[], int n) {
+    
+    if (n == 0) {
+        return;
+    }
+    
+    int temp = a[0];
+    a[0] = a[n];
+    a[n] = temp;
+    int i=0;
+    while (i<n) {
+        int maxIndex = i;
+        int leftIndex = 2*maxIndex + 1;
+        int rightIndex = 2*maxIndex + 2;
+        if (leftIndex < n && rightIndex < n) {
+            if (a[maxIndex] < a[leftIndex] && a[maxIndex] < a[rightIndex]) {
+                break;
+            }
+        }
+        if (leftIndex < n && a[maxIndex] > a[leftIndex]) {
+            maxIndex = leftIndex;
+        }
+        if (rightIndex < n && a[maxIndex] > a[rightIndex]) {
+            maxIndex = rightIndex;
+        }
+        if (maxIndex == i) {
+            break;
+        }
+        int temp = a[maxIndex];
+        a[maxIndex] = a[i];
+        a[i] = temp;
+        i = maxIndex;
+    }
+    
+    removeInto(a,--n);
+}
+
