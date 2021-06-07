@@ -1,0 +1,136 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+
+using namespace std;
+
+class TrieNode {
+    public: 
+    char data;
+    TrieNode** children;
+    bool isTerminal;
+    
+    TrieNode(char data) {
+        this->data = data;
+        children = new TrieNode*[26];
+        isTerminal = false;
+    }
+};
+
+
+class Trie {
+    private: 
+    
+    // insert function
+     void insertHelper(string data, TrieNode* root) {
+        if (data[0] == '\0') {
+            cout<<root->data<<endl;
+            root->isTerminal = true;
+            return;
+        }
+        int value = data[0]  - 'a';
+        TrieNode* childData = root->children[value];
+        if (childData == NULL) {
+            TrieNode* dataToInsert = new TrieNode(data[0]);
+            root->children[value] = dataToInsert;
+        }
+        insertHelper(data.substr(1), root->children[value]);
+    }
+    
+    // search function
+        bool searchHelper(string data,  TrieNode* root) {
+       
+       if (root == NULL) {
+           return false;
+       }
+       
+        if (data[0] == '\0') {
+            return root->isTerminal;
+        }
+        
+        int value = data[0] - 'a';
+        return searchHelper(data.substr(1) , root->children[value]);
+    }
+    
+    // remove function
+    string removeHelper(string data, TrieNode* root) {
+        if (root == NULL) {
+           return "Cannot find the word"; 
+        }
+        if (data[0] == '\0') {
+            return (root->isTerminal == true) ? "Word removed" : "Cannot find the word";
+        }
+        return removeHelper(data.substr(1), root->children[int(data[0] - 'a')]);
+    }
+    
+    // remove Root (delete) function
+    
+    void removeDeleteHelper(string data , TrieNode* root) {
+        if (data[0] == '\0') {
+            root->isTerminal = false;
+            return;
+        }
+        
+        if (!root->children[int(data[0] - 'a')]) {
+            return;
+        }
+        
+        removeDeleteHelper(data.substr(1), root->children[int(data[0] - 'a')]);
+        
+        TrieNode* childData = root->children[int(data[0] - 'a')];
+        for (int i=0; i<26; i++) {
+            if (childData->children[0]) {
+                return;
+            }
+        }
+        delete childData;
+        root->children[int(data[0] - 'a')] = NULL;
+        return;
+    }
+    
+    public:
+    TrieNode* root;
+    
+    // @constructor
+    Trie() {
+        root = new TrieNode('\0');
+    }
+    
+    // insert
+    void insert(string data) {
+        if (!data.size()) {
+            return;
+        }
+        insertHelper(data , root);
+    }
+    
+    // search    
+    bool search(string data) {
+        return searchHelper(data , root);
+    }
+    
+    string removeData(string data) {
+        return removeHelper(data, root);
+    }
+    
+    void deleteRootAndRemove(string data) {
+        removeDeleteHelper(data , root);
+    }
+};
+
+int main()
+{
+    Trie* root = new Trie();
+    root->insert("yash");
+    cout<<root->search("yash");
+    cout<<endl;
+    root->deleteRootAndRemove("yash");
+    cout<<root->search("yash");
+    return 0;
+}
