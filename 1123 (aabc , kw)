@@ -25,5 +25,6 @@ int main()
     string str = "1123";
     pattern(str, "");
     return 0;
+    
 }
 
