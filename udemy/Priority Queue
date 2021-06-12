@@ -1,0 +1,134 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+***********************************   Priority Queue (Udemy questions)   ********************************************/
+
+#include <iostream>
+#include <queue>
+#include <iterator>
+#include <map>
+#include <math.h>
+
+using namespace std;
+
+// approach 1 with time complexity (klogk + logk +  (n - k)log(n-k) ) => 
+void kNearestCabs(int** a , int n , int k) {
+    priority_queue<double> q;
+    map<double , char> hashmap;
+    
+    for (int i=0; i<k; i++) {
+        int x = a[i][0];
+        int y = a[i][1];
+        
+        int distance = sqrt((pow(x,2) + pow(y,2)));
+        hashmap[distance] = 'a' + i;
+        q.push(distance);
+    }
+        for (int i=k; i<n; i++) {
+        int x = a[i][0];
+        int y = a[i][1];
+        
+        int distance = sqrt((pow(x,2) + pow(y,2)));
+        if (q.top() > distance) {
+            hashmap.erase(q.top());
+            q.pop();
+            q.push(distance);  
+            hashmap[distance] = 'a' + i;
+        }
+    }
+    
+    map<double , char>:: iterator it;
+    
+    for (it = hashmap.begin(); it!=hashmap.end(); it++) {
+        cout<<it->second<<endl;
+    }
+    
+}
+
+// approach 2 with time complexity (n + klogn)
+
+void kNearestCabs2(int** a ,  int n , int k) {
+     priority_queue<double, vector<double>, greater<double>> q;
+        map<double , char> hashmap;
+    
+    for (int i=0; i<n; i++) {
+        int x = a[i][0];
+        int y = a[i][1];
+        
+        double distance = sqrt((pow(x,2) + pow(y,2)));
+        cout<<distance<<endl;
+        hashmap[distance] = 'a' + i;
+        q.push(distance);
+    }
+    
+    cout<<k<<endl;
+    while (k--) {
+        cout<<hashmap[q.top()]<<endl;
+        q.pop();
+    }
+}
+
+class MinPriorityOperatorClass {
+    public:
+    bool operator()(int a , int b) {
+        return a > b;
+    }
+};
+
+void mergingRopes(int* a  , int n) {
+    priority_queue<int, vector<int>, MinPriorityOperatorClass> q(a , a+n); // to insert all elements onces
+    
+    // for (int i=0; i<n; i++) {
+    //     q.push(a[i]);
+    // }
+    // vector<int> lowestValue;
+    int value = q.top();
+    q.pop();
+    value += q.top();
+    q.pop();
+    int mainValue = value;
+    
+    while (!q.empty()) {
+     value = value + q.top();
+    mainValue += value;
+    q.pop();
+    }
+    cout<<".........."<<mainValue<<endl;
+} 
+
+int main()
+{
+    int n ;
+    cin>>n;
+    // int k;
+    // cin>>k;
+    // int** a = new int*[n];
+    // for (int i=0; i<n; i++) {
+    //     a[i] = new int[2];
+    //     for (int j=0; j<2; j++) {
+    //         cin>>a[i][j];
+    //     }
+    // }
+
+    // for (int i=0; i<n; i++) {
+    //     cout<<i<<" ";
+    //     for (int j=0; j<2; j++) {
+    //         cout<<a[i][j]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+    
+    // kNearestCabs2(a , n , k);
+    
+    int* a = new int[n];
+    for (int i=0; i<n; i++)
+    cin>>a[i];
+    mergingRopes(a,n);
+    
+    return 0;
+}
+
+// 5 3 1 1 2 1 3 2 0 1 2 3 
