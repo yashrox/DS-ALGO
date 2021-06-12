@@ -7,13 +7,19 @@ Write your code in this editor and press "Run" button to compile and execute it.
 *******************************************************************************/
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
 class Copyconstructor {
+    public:
+    ~Copyconstructor() {
+        cout<<"Destructor"<<endl;
+    }
     public: 
     int age;
     int num;
+    char* name;
     Copyconstructor() {
         cout<<"Default works"<<endl;
         age = 0 ;
@@ -26,23 +32,48 @@ class Copyconstructor {
     }
     
     void display() {
-        cout<<age<<num<<endl;
+        cout<<age<<num<<name<<endl;
     }
+    Copyconstructor(Copyconstructor const & c) { // Inbuilt copy contructor copy that shallow copy bydefault; [we used to pass as reference otherwise it will be in recursion]
+        
+        // shallow copy (same array 0  index memory address is passed ,  this result in changes in one copy to another copy)
+        age = c.age;
+        num = c.num;
+        name = c.name;
+        
+        // deep copy  (A new array is created, that array is independent of previous array)
+        age = c.age;
+        num = c.num;
+        name =  new char[strlen(c.name)  + 1];
+        strcpy(name , c.name);
+    }
+    
 };
 
 int main()
 {
+    char name[] = "yash";
     Copyconstructor c1;
-    c1.display();
+    c1.name = name;
+    
     Copyconstructor c2(10,20);
-    c2.display();
-    Copyconstructor c3(c2);
-    c3.display();
+    c2.name = name;
+    
+    // Copyconstructor c3(c2);
+    // c3.display();
     
     // when we use dynamic allocation we need to derefere the pointer of 8 bytes to get the class type variable or point to class type data
     Copyconstructor *c4 = new Copyconstructor(20,20);
-    Copyconstructor c5(*c4);
-    c5.display();    
+    
+    (*c4).name = name;
+    Copyconstructor c5(*c4); // Copyconstructor c5 = *c4 (this is also a way to create a copy constructor)
+    c4->name[0] = 'A';
+    
+    c1.display();
+    c2.display();
+    c4->display();
+    c5.display(); // deep copy
+    
     
     return 0;
 }
