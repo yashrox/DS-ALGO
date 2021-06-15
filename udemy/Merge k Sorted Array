@@ -1,0 +1,64 @@
+// Online C++ compiler to run C++ program online
+#include <bits/stdc++.h>
+
+using namespace std;
+
+class KSorted {
+    public:
+    int element;
+    int index;
+    int location;
+    KSorted(int element, int index, int location) {
+        this->element = element;
+        this->index = index;
+        this->location = location;
+    }
+};
+
+class Compare {
+    public:
+    bool operator()(const KSorted a , const KSorted b) {
+        return a.element > b.element;
+    }
+};
+
+vector<int> mergeKArrays(vector<vector<int> > arrays){
+    //Complete this function
+    priority_queue<KSorted, vector<KSorted>, Compare> pq;
+    int size = arrays.size();
+    for (int i=0; i<size; i++) {
+        KSorted k(arrays[i][0], 0, i);
+        pq.push(k);
+    }
+    vector<int> result;
+    while (!pq.empty()) {
+        result.push_back(pq.top().element);
+        int size = arrays[pq.top().location].size();
+        int index = pq.top().index;
+        if ( size > (index + 1)) {
+            cout<<pq.top().index<<endl;
+          KSorted k(arrays[pq.top().location][index + 1], index + 1, pq.top().location);
+          cout<<arrays[pq.top().location][index + 1]<<endl;
+          pq.push(k); 
+        }
+        pq.pop();
+    }
+    return result;
+}
+
+int main() {
+    // Write C++ code here
+    vector<vector<int>> v {
+    {10,15,20,30},
+    {2,5,8,14,24},
+    {0,11,60,90},
+    };
+    
+    vector<int> result = mergeKArrays(v);
+   // cout<<"going111111"<<endl;
+    for (int i=0; i<result.size(); i++) {
+        cout<<result[i]<<" ";
+    }
+
+    return 0;
+}
