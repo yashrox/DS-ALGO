@@ -173,6 +173,21 @@ class BTOperation {
         return p;
     }
     
+    void verticalOrder(BTNode* root , map<int, vector<int>>& m, int val) {
+        if (root == NULL) {
+            return;
+        }
+        if (m.count(val) > 0) {
+            m[val].push_back(root->data);
+        } else {
+            vector<int> v;
+            v.push_back(root->data);
+            m[val] = v; 
+        }
+        verticalOrder(root->left , m, val - 1);
+        verticalOrder(root->right , m, val + 1);
+    }
+    
 };
 
 int main() {
