@@ -9,6 +9,7 @@ Write your code in this editor and press "Run" button to compile and execute it.
 #include <iostream>
 #include <queue>
 #include <math.h>
+#include <map>
 using namespace std;
 
 class BTNode {
@@ -60,11 +61,11 @@ class BTOperation {
             cout<<temp->data<<" : "<<" ";
             if (temp->left != NULL) {
                 q.push(temp->left);
-                cout<<temp->left->data<<" "<<" , ";
+                cout<<temp->left->data<<" L"<<" , ";
             }
             if (temp->right != NULL) {
                 q.push(temp->right);
-                cout<<temp->right->data<<" ";
+                cout<<temp->right->data<<" R";
             }
             cout<<endl;
         }
@@ -188,6 +189,60 @@ class BTOperation {
         verticalOrder(root->right , m, val + 1);
     }
     
+    void leftView(BTNode * root){
+    //Complete the function
+    if (root == NULL) {
+        return ;
+    }
+    int val = 0;
+    queue<pair<BTNode*, int>> q;
+    q.push(make_pair(root , 0));
+    vector<int> result; 
+    while (!q.empty()) {
+        pair<BTNode*, int> child = q.front();
+        if (child.first->left) {
+            q.push(make_pair(child.first->left , child.second + 1));    
+        } 
+        if (child.first->right) {
+             q.push(make_pair(child.first->right, child.second + 1));
+        }
+
+        if (val == child.second) {
+            // result.push_back(child.first->data);
+            cout<<child.first->data<<" ";
+            val++;
+        }
+        q.pop();
+    } 
+}
+
+    void printMirrorImage(BTNode* root) {
+        if (root == NULL) {
+            return;
+        }
+        BTNode* temp = root->left;
+        root->left = root->right;
+        root->right = temp;
+        printMirrorImage(root->left);
+        printMirrorImage(root->right);
+    }
+    
+    bool checkEqual(BTNode * root1, BTNode * root2) {
+    if (root1 == NULL && root2 == NULL) {
+        return true;
+    }else if (root1 == NULL && root2 != NULL) {
+        return false; 
+    } else if (root1 != NULL && root2 == NULL) {
+        return false;
+    }
+    cout<<root1->data<<" "<<root2->data<<endl;
+    if (root1->data != root2->data) {
+        return false;
+    }
+    bool left =  checkEqual(root1->left , root2->left);
+    bool right = checkEqual(root1->right , root2->right);
+    return left && right;
+    }
 };
 
 int main() {
@@ -195,16 +250,25 @@ int main() {
     BTOperation action;
     BTNode* root =  action.insertRecur();
     action.root = root;
-    //action.levelOrderPrint();
+    action.levelOrderPrint();
+    BTNode* root1 =  action.insertRecur();
     // cout<<action.diameter(root)<<endl;
     // cout<<action.diameterOptimized(root).first<<endl;
     // cout<<action.decedantChanges(root);
     // action.levelOrderPrint();
-    cout<<action.heightBalanced(root).second<<endl;
-    cout<<action.subSetSum(root)<<endl;
-    cout<<max(action.subSetSumOptimized(root).first , action.subSetSumOptimized(root).second);
+    // cout<<action.heightBalanced(root).second<<endl;
+    // cout<<action.subSetSum(root)<<endl;
+    // cout<<max(action.subSetSumOptimized(root).first , action.subSetSumOptimized(root).second);
+    // action.leftView(root);
+    action.printMirrorImage(root);
+    // cout<<endl<<endl;
+    // action.levelOrderPrint();
+    cout<<action.checkEqual(root1 , root);
     return 0;
 }
 
 // 1 2 4 -1 -1 5 7  8 -1 -1 -1 -1 3 -1 6 -1 -1
 // 1 2 4 -1 -1 5 7   -1 -1 -1 3 -1 6 -1 -1
+// 10 2 7 -1 -1 8 -1 -1 3 12 -1 -1 15 -1 14 -1 -1 
+// 6 3 1 -1-1 7 -1 -1 8 4 7 -1 -1 1 -1 -1 2 -1 3 -1 -1 
+// 6 8 2 3 -1 -1 -1 4 1 -1 -1 7 -1 -1 3 7 -1 -1 1 -1 -1
