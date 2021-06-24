@@ -1,0 +1,234 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+class BSTNode {
+    public: 
+    int data;
+    BSTNode* left;
+    BSTNode* right;
+    
+    BSTNode(int data) {
+        this->data = data;
+    }
+    ~BSTNode() {
+        delete left;
+        delete right;
+    }
+};
+
+class BST {
+    BSTNode* root;
+    
+    public: 
+    
+    BST() {
+    root = NULL;
+    }
+    
+    ~BST() {
+      delete root;  
+    }
+    
+    private: 
+    
+    int minRight(BSTNode* root) {
+        if (root == NULL) {
+            return INT_MAX;
+        }
+        return min(root->data, min(minRight(root->left), minRight(root->right)));
+    }
+    
+    BSTNode* deleteHelper(int data , BSTNode* root) {
+        if (root == NULL) {
+            return NULL;
+        }
+        
+        if (root->data == data) {
+            if (!root->left && !root->right) {
+                delete root;
+                return NULL;
+            } else if (root->right && !root->left) {
+                return root->right;
+            } else if (!root->right && root->left){
+                return root->left;
+            } else {
+                int value = minRight(root->right);
+                root->data = value;
+                root->right = deleteHelper(value , root->right);
+                return root;
+            }
+        } else if (root->data > data) {
+            root->left = deleteHelper(data, root->left);
+        } else if (root->data < data) {
+            root->right = deleteHelper(data, root->right);
+        }
+    }
+    
+    public:
+
+    void deleteNode(int data) {
+        if (root == NULL) {
+            return;
+        } else {
+            root = deleteHelper(data, root);
+        }
+        
+    }
+    
+    private:
+    BSTNode* insertDataHelper(int data, BSTNode* root) {
+        if (root == NULL) {
+            BSTNode* childData = new BSTNode(data);
+            return childData;
+        }
+        
+        if (root->data > data) {
+            root->left = insertDataHelper(data, root->left);
+        } else if (root->data <= data) {
+            root->right = insertDataHelper(data, root->right);
+        }
+        return root;
+    }
+    
+    public:
+    void insertData(int data) {
+        if (root == NULL) {
+            root = new BSTNode(data);
+        } else {
+            root = insertDataHelper(data, root);
+        }    
+    }
+    
+    private:
+    bool searchHelper(int data, BSTNode* root) {
+        if (root == NULL) {
+            return false;
+        }
+        if (root->data == data) {
+            return true;
+        } else if (root->data > data) {
+            return searchHelper(data, root->left);
+        } else if (root->data < data) {
+            return searchHelper(data, root->right);
+        }
+        
+    }
+    
+    public:
+    bool search(int data) {
+        return searchHelper(data , root);
+    }
+    
+    void printInputLevel() {
+    queue<BSTNode*> completeNodes;
+    completeNodes.push(root);
+    while(!completeNodes.empty()){
+        BSTNode* temp = completeNodes.front();
+        completeNodes.pop();
+        BSTNode* left  = temp->left;
+        BSTNode* right = temp->right;
+        cout<<temp->data<<":";
+        if(left != NULL){
+        	completeNodes.push(temp->left);
+            cout<<"L"<<":"<<left->data<<",";
+        }else{
+            cout<<"L:-1,";
+        }
+        if(right != NULL){
+        	completeNodes.push(temp->right);    
+        	cout<<"R:"<<right->data;
+        }else{
+        cout<<"R:-1";
+        }
+        cout<<endl;
+    }
+}
+
+    void findMinDifference(BSTNode* root, int target ,int& mindiff) {
+        if (root == NULL) {
+            return;
+        }
+        mindiff =  (target - root->data) < mindiff ? (target - root->data) : mindiff;
+        if (root->data > target) {
+            findMinDifference(root->left , target, mindiff);
+        } else {
+            findMinDifference(root->right, target, mindiff);
+        }
+    }
+    void diff(int target , int& mindiff) {
+        findMinDifference(root, target, mindiff);
+    }
+    
+    pair<BSTNode* , BSTNode*> linkedListReturn(BSTNode* root) {
+        if (root == NULL) {
+            pair<BSTNode*, BSTNode*> p;
+            p.first = NULL;
+            p.second = NULL;
+            return p;
+        }
+        pair<BSTNode*, BSTNode*> leftChild = linkedListReturn(root->left);
+        pair<BSTNode*, BSTNode*> rightChild = linkedListReturn(root->right); 
+
+        pair<BSTNode*, BSTNode*> rootedValue;
+        if (leftChild.first != NULL && leftChild.second != NULL && rightChild.first != NULL && rightChild.second != NULL) {
+           rootedValue.first = leftChild.first;
+           rootedValue.second = rightChild.second;
+           leftChild.second->left = root;
+           root->left = rightChild.first;
+        } else if (leftChild.first != NULL && leftChild.second != NULL && rightChild.first == NULL && rightChild.second == NULL) {
+            rootedValue.first = leftChild.first;
+            rootedValue.second = root;
+            leftChild.second->left = root;
+        } else if (leftChild.first == NULL && leftChild.second == NULL && rightChild.first != NULL && rightChild.second != NULL) {
+            rootedValue.first = root;
+            rootedValue.second = rightChild.second;
+            root->left = rightChild.first; 
+        } else if (leftChild.first == NULL && leftChild.second == NULL && rightChild.first == NULL && rightChild.second == NULL) {
+            rootedValue.first = root;
+            rootedValue.second = root;
+        }
+        return rootedValue;
+    }
+    
+    void checkLL() {
+        pair<BSTNode* , BSTNode*> p = linkedListReturn(root);
+        cout<<p.first->data<<" "<<p.second->data<<endl;
+        while (p.first != NULL) {
+            cout<<p.first->data<<" ";
+            p.first = p.first->left;
+        }
+    }
+    
+};
+
+
+int main()
+{
+   BST b;
+   b.insertData(4);
+    b.insertData(2);
+    b.insertData(6);
+    b.insertData(1);
+    b.insertData(5);
+    b.insertData(7);
+    b.insertData(3);
+    b.printInputLevel();
+    
+    cout<<endl<<endl;
+    b.printInputLevel();
+    int mindiff = INT_MAX;
+    // b.diff(9 , mindiff);
+    // cout<<"............."<<endl;
+    // cout<<mindiff<<endl;
+    b.checkLL();
+    return 0;
+}
