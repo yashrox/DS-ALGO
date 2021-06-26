@@ -309,7 +309,7 @@ public:
     return succesor;
   }
 
-  BSTNode *lcaHelper (BSTNode * root, int a, int b, BSTNode* lastValue)
+  BSTNode *lcaHelper (BSTNode * root, int a, int b)
   {
 
     if (root == NULL)
@@ -318,20 +318,18 @@ public:
       }
 
     BSTNode *minValue = NULL;
-    if (root->data > a && root->data < b)
+    cout<<root->data<<" "<<b<<endl;
+    
+    if ((root->data > a && root->data < b) || (root->data == b))
       {
 	minValue = root;
-      }
-      if (root->data == b) {
-          lastValue = root;
-          cout<<"going";
       }
 
     BSTNode *intermediate = NULL;
     if (root->data > a && root->data < b)
       {
-	BSTNode *v1 = lcaHelper (root->left, a, b, lastValue);
-	BSTNode *v2 = lcaHelper (root->right, a, b, lastValue);
+	BSTNode *v1 = lcaHelper (root->left, a, b);
+	BSTNode *v2 = lcaHelper (root->right, a, b);
 	if (v1 && v2)
 	  {
 	    intermediate = v1->data > v2->data ? v2 : v1;
@@ -347,19 +345,19 @@ public:
       }
     else if (root->data > a && root->data > b)
       {
-	BSTNode *v1 = lcaHelper (root->left, a, b, lastValue);
+	BSTNode *v1 = lcaHelper (root->left, a, b);
 	intermediate = v1;
       }
     else if (root->data < a && root->data < b)
       {
-	BSTNode *v1 = lcaHelper (root->right, a, b, lastValue);
+	BSTNode *v1 = lcaHelper (root->right, a, b);
 	intermediate = v1;
       }
 
     if (minValue && intermediate)
       {
-	return (minValue->data >
-		intermediate->data) ? intermediate : minValue;
+	return ((minValue->data >
+		intermediate->data) && (minValue->data != b) ) ? intermediate : minValue;
       }
     else if (minValue)
       {
@@ -379,13 +377,49 @@ public:
   {
     //Complete this function and return address of the node
     BSTNode* lastNode = NULL;
-    BSTNode* result = lcaHelper (root, a, b, lastNode);
+    BSTNode* result = lcaHelper (root, a, b);
     if (result) {
         return result;
     } else {
      return lastNode;   
     }
   }
+  
+  int shortestDist(BSTNode * root,int a,int b){
+    //Complete this method
+    if (root == NULL) {
+        return INT_MAX;
+    }
+    int returnValue = INT_MAX;
+    if (root->data > a && root->data < b) {
+    returnValue = root->data;    
+    cout<<returnValue<<endl;
+    }
+    
+    if (root->data > a && root->data < b) {
+        int v1 = shortestDist(root->left , a , b);
+        int v2 = shortestDist(root->right , a , b);
+        returnValue = min(returnValue, min(v1,v2));
+    }
+    if (root->data >= a && root->data >= b) {
+        int v1 = shortestDist(root->left, a , b);
+        returnValue = min(returnValue, v1);
+    }
+    if (root->data <= a && root->data <= b) {
+        int v1 = shortestDist(root->right, a , b);
+        returnValue = min(returnValue, v1);
+    }
+    return returnValue;
+}
+
+    int shortv(int a , int b) {
+        int v = shortestDist(root, a , b);
+        if (v > b) {
+            return a;
+        } else {
+            return v;
+        }
+    }
 
 };
 
@@ -394,27 +428,28 @@ int
 main ()
 {
   BST b;
-  b.insertData (5);
+  b.insertData (10);
+  b.insertData (4);
+  b.insertData (15);
   b.insertData (2);
-  b.insertData (12);
-  b.insertData (-4);
-  b.insertData (3);
-  b.insertData (9);
-  b.insertData (21);
-  b.insertData (19);
-  b.insertData (25);
-  b.printInputLevel ();
+  b.insertData (5);
+  b.insertData (13);
+  b.insertData (22);
+  b.insertData (1);
+  b.insertData (14);
+ // b.printInputLevel ();
 
-  cout << endl << endl;
-  b.printInputLevel ();
-  int mindiff = INT_MAX;
+  // cout << endl << endl;
+//   b.printInputLevel ();
+//   int mindiff = INT_MAX;
   // b.diff(9 , mindiff);
   // cout<<"............."<<endl;
   // cout<<mindiff<<endl;
   // b.checkLL();
   // cout << b.findSuccessor (6);
-  cout<<endl;
-  BSTNode *check1 = b.lca (9, 12);
-  cout <<".............."<< check1->data << endl;
+  // cout<<endl;
+//   BSTNode *check1 = b.lca (9, 12);
+//   cout <<".............."<< check1->data << endl;
+    cout<<b.shortv(10,13);
   return 0;
 }
