@@ -184,6 +184,15 @@ int gameTheory(int start , int end , vector<int> v , int index) {
     return total;
 }
 
+int gameTheory(int start, int end , vector<int> v) {
+    if (start > end) {
+        return 0;
+    }
+    int x  = v[start] + min(gameTheory(start+2, end, v),gameTheory(start+1, end-1,v));
+    int y = v[end] + min(gameTheory(start+1 , end-1, v), gameTheory(start, end-2, v));
+    return max(x, y);
+}
+
 int main()
 {
     // cout<<stair(4);
