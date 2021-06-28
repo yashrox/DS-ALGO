@@ -90,6 +90,100 @@ void permutation(string a , int index, set<string>& result) {
     }
 }
 
+bool nqueenHelper(int** solver , int i , int j, int length) {
+    for (int k=0; k<i; k++) {
+        if (solver[k][i]) {
+            return false;
+        }
+    }
+    int m = i - 1;
+    int n = j - 1;
+    
+    while (m >= 0 && n >= 0) {
+        if (solver[m][n]) {
+            return false;
+        }
+        m--;
+        n--;
+    }
+    
+    m = i - 1;
+    n = j + 1;
+    
+    while (m>=0 && n < length) {
+        if (solver[m][n]) {
+            return false;
+        }
+        m--;
+        n++;
+    }
+    
+    return true;
+}
+
+void solveNqueen(int n , int** solver, int index, int& total) {
+    if (index >= n ) {
+        total++;
+        return ;
+    }
+    for (int i=0; i<n; i++) {
+        solver[index][i] = 1;
+        if(nqueenHelper(solver, index, i, n)) {
+            solveNqueen(n,solver, index+1, total);
+        }
+        solver[index][i] = 0;
+    }
+}
+
+int nQUEEN(int n) {
+
+    int** solver;
+    for (int i=0; i<n; i++) {
+        solver[i] = new int[n];
+        for (int j=0; j<n; j++) {
+            solver[i][j] = 0;
+        }
+    }
+    int total = 0;
+    solveNqueen(n , solver, 0 , total);
+    cout<<"total"<<endl;
+    return total;
+}
+
+int gameTheory(int start , int end , vector<int> v , int index) {
+    if (start == end) {
+       
+       if (v.size() % 2 == 0) {
+        if (index % 2 == 0) {
+            return v[start];
+        } else {
+        return 0;    
+        }   
+       } else {
+           return 0;
+       }
+    }
+    if (start > end) {
+        return 0;
+    }
+    int total = 0;
+    if (index %2 == 0) {
+        int x = v[start] + firstPlayer(start + 1 , end, v, index + 1);
+        int y =  v[end] + firstPlayer(start, end-1, v, index + 1);
+        total = max(x , y);
+    } else {
+        if (v[start] > v[end]) {
+            start++;
+        } else {
+            end--;
+        }
+        int z  = firstPlayer(start , end , v, index + 1);
+        total = z;
+    }
+    
+    return total;
+}
+
 int main()
 {
     // cout<<stair(4);
@@ -104,11 +198,13 @@ int main()
     // string a[] = {"" , "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
     // printPattern(23, "", a);
     // permutation("abc", 0);
-    set<string> result;
-    permutation("aaac" , 0 , result);
-    // vector<string> result1;
-    for (auto i=result.begin(); i!=result.end(); i++) {
-    cout<<*i<<endl;
-    }
+    // set<string> result;
+    // permutation("aaac" , 0 , result);
+    // // vector<string> result1;
+    // for (auto i=result.begin(); i!=result.end(); i++) {
+    // cout<<*i<<endl;
+    // }
+    int x = nQUEEN(4);
+    cout<<x<<endl;
     return 0;
 }
