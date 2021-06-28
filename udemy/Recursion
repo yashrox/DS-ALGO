@@ -1,0 +1,114 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+******************************** Recursion ***********************************************/
+
+#include <iostream>
+#include <set>
+#include<vector>
+using namespace std;
+
+int stair(int n) {
+    if (n < 0) {
+        return 0;
+    }
+    if (n == 1 || n == 0) {
+        return 1;
+    }
+    return stair(n-1) + stair(n-2) + stair(n-3);
+}
+
+void subset(string str, string out) {
+    if (str.size() == 0) {
+        cout<<out<<" ";
+        return;
+    }
+    subset(str.substr(1), out);
+    subset(str.substr(1), out + str[0]);
+}
+
+int subsetSum(int a[] , int i ,  int n , int sum) {
+    
+    if (sum == 0) {
+        return 1;
+    }
+    
+    if (i >= n) {
+        return 0;
+    }
+    
+    int x = subsetSum(a , i+1, n, sum - a[i]);
+    int y = subsetSum(a, i+1, n , sum);
+    return x + y ;
+}
+
+void balancedParanthesis(int n , int open, int close, string str) {
+    if (n < open) {
+        return;
+    }
+    if (open == n && close == n) {
+        cout<<str<<endl;
+        return;
+    }
+    // cout<<str<<endl;
+    balancedParanthesis(n , open + 1, close , str + "(");
+    if (open > close) {
+        balancedParanthesis(n , open , close+1, str + ")");
+    }
+}
+
+void printPattern(int n, string str, string a[]) {
+    if (n == 0) {
+        cout<<str<<endl;
+        return;
+    }
+    
+    string input = a[n%10];
+    for (int i=0; i<input.size(); i++) {
+        printPattern(n/10, input[i] + str, a);
+    }
+}
+
+void swap(string& a , int i , int j) {
+    char temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+    return;
+}
+
+void permutation(string a , int index, set<string>& result) {
+    if (index == a.size() - 1) {
+        result.insert(a);
+    }
+    for (int i=index; i<a.size(); i++) {
+        swap(a , index , i);
+        permutation(a , index+1, result);
+        swap(a, index, i);
+    }
+}
+
+int main()
+{
+    // cout<<stair(4);
+    // cout<<endl;
+    // subset("abc", "");
+    // cout<<endl;
+    // int a[] = {1,2,3,4,5};
+    // int n = 5;
+    // int sum = 6;
+    // cout<<subsetSum(a, 0, n , sum);
+    // balancedParanthesis(3 , 0 , 0 , "");
+    // string a[] = {"" , "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    // printPattern(23, "", a);
+    // permutation("abc", 0);
+    set<string> result;
+    permutation("aaac" , 0 , result);
+    // vector<string> result1;
+    for (auto i=result.begin(); i!=result.end(); i++) {
+    cout<<*i<<endl;
+    }
+    return 0;
+}
