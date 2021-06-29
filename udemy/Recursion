@@ -150,47 +150,110 @@ int nQUEEN(int n) {
     return total;
 }
 
-int gameTheory(int start , int end , vector<int> v , int index) {
-    if (start == end) {
+// int gameTheory(int start , int end , vector<int> v , int index) {
+//     if (start == end) {
        
-       if (v.size() % 2 == 0) {
-        if (index % 2 == 0) {
-            return v[start];
-        } else {
-        return 0;    
-        }   
-       } else {
-           return 0;
-       }
-    }
-    if (start > end) {
-        return 0;
-    }
-    int total = 0;
-    if (index %2 == 0) {
-        int x = v[start] + firstPlayer(start + 1 , end, v, index + 1);
-        int y =  v[end] + firstPlayer(start, end-1, v, index + 1);
-        total = max(x , y);
-    } else {
-        if (v[start] > v[end]) {
-            start++;
-        } else {
-            end--;
-        }
-        int z  = firstPlayer(start , end , v, index + 1);
-        total = z;
-    }
+//       if (v.size() % 2 == 0) {
+//         if (index % 2 == 0) {
+//             return v[start];
+//         } else {
+//         return 0;    
+//         }   
+//       } else {
+//           return 0;
+//       }
+//     }
+//     if (start > end) {
+//         return 0;
+//     }
+//     int total = 0;
+//     if (index %2 == 0) {
+//         int x = v[start] + firstPlayer(start + 1 , end, v, index + 1);
+//         int y =  v[end] + firstPlayer(start, end-1, v, index + 1);
+//         total = max(x , y);
+//     } else {
+//         if (v[start] > v[end]) {
+//             start++;
+//         } else {
+//             end--;
+//         }
+//         int z  = firstPlayer(start , end , v, index + 1);
+//         total = z;
+//     }
     
-    return total;
+//     return total;
+// }
+
+// int gameTheory(int start, int end , vector<int> v) {
+//     if (start > end) {
+//         return 0;
+//     }
+//     int x  = v[start] + min(gameTheory(start+2, end, v),gameTheory(start+1, end-1,v));
+//     int y = v[end] + min(gameTheory(start+1 , end-1, v), gameTheory(start, end-2, v));
+//     return max(x, y);
+// }
+
+vector<int> returnRat(int n , int rat[][4], int sol[][4], int ans[][4], int i , int j) {
+    if (i >= n || j >= n) {
+        vector<int> v;
+        return v;
+    }
+    if (sol[i][j] == 1 || rat[i][j] == 0) {
+        vector<int> v;
+        return v;
+    }
+    sol[i][j] = 1;
+    vector<int> x = returnRat(n , rat, sol, ans, i+1, j);
+    vector<int> y = returnRat(n , rat, sol, ans, i , j+1);
+    sol[i][j] = 0;
+    if (x.size() > y.size()) {
+        x.push_back(ans[i][j]);
+        return x;
+    } else {
+        y.push_back(ans[i][j]);
+        return y;
+    }
 }
 
-int gameTheory(int start, int end , vector<int> v) {
-    if (start > end) {
+vector<int> ratInMaze(int n) {
+    int a[4][4] = {{1, 0, 0, 0},
+                {1, 1, 0, 1},
+                {0, 1, 0, 0},
+                {1, 1, 1, 1}};
+    int b[4][4] = {{0 , 0 , 0 , 0}, 
+                {0 , 0, 0, 0},    
+                {0 , 0, 0, 0},
+                {0 , 0, 0, 0},
+                };
+    int c[4][4] = {{1,2,3,4} , {5,6,7,8}, {9,10,11,12}, {13,14,15,16}};            
+                
+    return returnRat(n , a, b, c, 0 , 0);            
+}
+
+<----------Failed--->
+
+int returnLongPattern(int a[][10], int b[][10], int m, int n, int i , int j) {
+    if (i >= m || j >= n || i < 0 || j < 0) {
         return 0;
     }
-    int x  = v[start] + min(gameTheory(start+2, end, v),gameTheory(start+1, end-1,v));
-    int y = v[end] + min(gameTheory(start+1 , end-1, v), gameTheory(start, end-2, v));
-    return max(x, y);
+    if (b[i][j] == 1 || a[i][j] == 0) {
+        return 0;
+    }
+    b[i][j] = 1;
+    int x = returnLongPattern(a , b, m, n , i , j+1);
+    int y = returnLongPattern(a , b, m, n , i-1 , j);
+    int m2 = returnLongPattern(a , b, m, n , i+1 , j);
+    int m1 = returnLongPattern(a , b, m, n , i , j-1);
+    b[i][j] = 0;
+    return 1 + max(x,max(y , max(m2,m1)));
+}
+
+void longPattern() {
+    int a[3][10] = {{1,1,1,1,1,1,1,1,1,1}, {1,1,0,1,1,0,1,1,0,1}, {1,1,1,1,1,1,1,1,1,1}};
+    int b[3][10] = {{0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0,0}, {0,0,0,0,0,0,0,0,0,0}};
+    int n = 10;
+    int m = 3;
+    cout<<"........."<<returnLongPattern(a , b, m, n , 0 , 0);
 }
 
 int main()
@@ -213,7 +276,12 @@ int main()
     // for (auto i=result.begin(); i!=result.end(); i++) {
     // cout<<*i<<endl;
     // }
-    int x = nQUEEN(4);
-    cout<<x<<endl;
+    // int x = nQUEEN(4);
+    // cout<<x<<endl;
+    // vector<int> x =  ratInMaze(4);
+    // for (auto i=0; i<x.size(); i++) {
+    //     cout<<x[i]<<" ";
+    // }
+    longPattern();
     return 0;
 }
