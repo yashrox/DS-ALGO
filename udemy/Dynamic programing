@@ -1,0 +1,60 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+****************************** Dynamic Problem *************************************/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int ladderDp(int dp[] , int n) {
+    if (n < 0) {
+        return 0;
+    }
+    if (n == 0 || n == 1) {
+        return 1;
+    }
+    if (dp[n] > -1) {
+        return dp[n];
+    }
+    
+    dp[n] = ladderDp(dp, n-1) + ladderDp(dp, n-2) + ladderDp(dp, n-3);
+    return dp[n];
+}
+
+void coinChange(vector<int> v ,  vector<int> out,  int sum,  int& minCoin) {
+    if (sum == 0) {
+        int outSize = out.size();
+        minCoin = minCoin > outSize ? minCoin : outSize;
+        return;
+    }
+    if (sum < 0) {
+        return;
+    }
+    
+    for (int i=0; i<v.size(); i++) {
+        out.push_back(v[i]);
+        coinChange(v, out , sum - v[i], minCoin);
+        out.pop_back();
+    }
+}
+
+int main()
+{
+    // int n = 4;
+    // int dp[n+1];
+    // for (int i=0; i<=n; i++) {
+    //     dp[i] = -1;
+    // }
+    // cout<<ladderDp(dp, n);
+    vector<int> v {1,3,7,10};
+    vector<int> out;
+    int sum = 15;
+    int minCoin = INT_MIN;
+    coinChange(v, out, sum , minCoin);
+    cout<<minCoin<<endl;
+    return 0;
+}
