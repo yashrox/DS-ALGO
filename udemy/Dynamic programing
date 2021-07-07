@@ -228,6 +228,47 @@ int maxCountingSequence(string s1 , string s2 , int i , int j) {
     }
 }
 
+int knapsack(vector<int> prices,  vector<int> weight, int sum, int index ) {
+    if (index >= prices.size() || sum <= 0) {
+        return 0;
+    }
+    
+    
+    int val1 = 0 , val2 = 0;
+    if (weight[index] < sum) {
+        val1 = prices[index] + knapsack(prices, weight, sum - weight[index], index + 1);    
+    }
+    val2 = knapsack(prices, weight, sum, index + 1);
+    
+    return max(val1, val2);
+}
+
+long long find(int n, vector<int> coins, int index, vector<vector<int>>& dp) {
+    if (n == 0) {
+        return 1;
+    }
+    if (n < 0 || index >= coins.size()) {
+        return 0;
+    }
+    if (dp[index][n] > -1) {
+        return dp[index][n];
+    }
+    long long int ans = 0;
+    ans += find(n - coins[index] , coins, index, dp);
+    ans += find(n , coins, index + 1, dp);
+    dp[index][n] = ans;
+    return ans;
+}
+
+long long findCombinations(int n, vector<int> coins){
+    //Write your code here. Do not modify the function or parameters. You can use helper function if needed.
+
+    int size = coins.size();
+    
+    vector<vector<int>> dp(size , vector<int>(n+1, -1));
+    return find(n , coins, 0 , dp);
+}
+
 int main()
 {
     // int n = 4;
@@ -246,8 +287,9 @@ int main()
     // coinChange(v, out, sum , minCoin);
     // cout<<minCoin<<endl;
     // cout<<coinChangeTopDown(v, 4 , sum , out);
-    vector<int> v {2,3,5,1,4};
-    
+    vector<int> v {1,2,3};
+    vector<int> w{5,20,20,10};
+    int n = 4;
     // vector<int> dp;
     // for (int i=0; i<=v.size(); i++)
     //     dp.push_back(-1);
@@ -258,13 +300,16 @@ int main()
     // cout<<NonAdjacentSum(v, 0, 6);
     // cout<<frogJumpK(v , 0, 5 , 3);
     // LIS();
-    string s1 = "ABC";
-    string s2 = "ABCECGD";
-    cout<<maxCountingSequence(s2, s1, 6 , 2);
+    // string s1 = "ABC";
+    // string s2 = "ABCECGD";
+    // cout<<maxCountingSequence(s2, s1, 6 , 2);
     // int n = s1.size();
     // int m = s2.size();
     // vector<vector<int>> dp(n , vector<int>(m , -1));
     // cout<<longestCommonSubSequence(s1, s2 , 0 , 0, dp);
     // cout<<wineDp(v, 0 , 4 , 1);
+    // int max = knapsack(w,v,11, 0);
+    // cout<<max<<endl;
+    cout<<findCombinations(n , v);
     return 0;
 }
