@@ -269,6 +269,57 @@ long long findCombinations(int n, vector<int> coins){
     return find(n , coins, 0 , dp);
 }
 
+int editDistance(string s1 , string s2, int m, int n) {
+    if (s1.size() == 0 ) {
+        return n;
+    } else if (s2.size() == 0) {
+        return m;
+    }
+    
+    if (s1[0] == s2[0]) {
+        return editDistance(s1.substr(1),s2.substr(1), m-1, n-1);
+    } else {
+        return 1 + min(editDistance(s1.substr(1) , s2.substr(1), m-1, n-1) , min(editDistance(s1.substr(1),s2, m-1,n), editDistance(s1,s2.substr(1),m,n-1)));    
+    }
+}
+
+pair<char , int> gameOfwits(string s , int i, int m , int n) {
+    if (m>n) {
+        pair<char , int> p;
+        p.first = 'X';
+        p.second = 0;
+    }
+    char turn;
+    if (i%2 == 0) {
+        turn = 'O';
+    } else {
+        turn = 'H';
+    }
+    pair<char, int> v1 = make_pair(turn, 0);
+    pair<char, int> v2 = make_pair(turn, 0);
+    pair<char, int> ans;
+    int update = 0;
+    if (turn == s[m]) {
+        v1 = gameOfwits(s, i+1, m+1, n); 
+        update = 1;
+    }  
+    if (turn == s[n]) {
+        v2 = gameOfwits(s, i+1, m , n-1);
+        update = 1;
+    }
+    if (!update) {    
+    ans.first = turn == 'H' ? 'O' : 'H';
+        ans.second = 2 + (n - m);
+        return ans;
+    }
+    
+    if (v1.second > v2.second) {
+        return v1;
+    } else {
+        return v2;
+    }
+}
+
 int main()
 {
     // int n = 4;
@@ -310,6 +361,12 @@ int main()
     // cout<<wineDp(v, 0 , 4 , 1);
     // int max = knapsack(w,v,11, 0);
     // cout<<max<<endl;
-    cout<<findCombinations(n , v);
+    // cout<<findCombinations(n , v);
+    // string s1 = "geek";
+    // string s2 = "gesek";
+    // cout<<editDistance(s1,s2, 4, 5);
+    string s = "OHOHOOHO";
+    pair<char, int> x = gameOfwits(s,0,0,7);
+    cout<<x.first<<" "<<x.second<<endl;
     return 0;
 }
