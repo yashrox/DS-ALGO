@@ -177,6 +177,87 @@ int rain(vector<int> v) {
      return maxWater;
 }
 
+int rainWater(vector<int> a) {
+    vector<int> forwardMax;
+    vector<int> backwardMax;
+    int size = a.size();
+    int max = a[0];
+    forwardMax.push_back(a[0]);
+    for (int i=1; i<size; i++) {
+           if (max < a[i]) {
+               max = a[i];
+           }
+           forwardMax.push_back(max);
+    }
+    int minVal = a[size-1];
+    backwardMax.push_back(minVal);
+    for (int i=size-2; i>=0; i--) {
+        if (minVal < a[i]) {
+            minVal = a[i];
+        }
+        // cout<<minVal<<" ";
+        backwardMax.push_back(minVal);
+    }
+    int returnMax = 0;
+    for (int i=0; i<size; i++) {
+        // cout<<forwardMax[i]<<" "<<backwardMax[i]<<endl;
+        returnMax += min(forwardMax[i], backwardMax[size-i-1]) - a[i];
+    }
+    return returnMax;
+}
+
+vector<int> subArraySort(vector<int> a) {
+    int size = a.size();
+    int index1 = -1 , index2 = -1;
+    for (int i=1; i<size-1; i++) {
+        if (a[i-1] > a[i] || a[i+1] < a[i]) {
+            if (index1 == -1) {
+                index1 = a[i];
+            } else {
+                if (index1 > a[i]) {
+                    index2 = index1;
+                    index1 = a[i];
+                } else {
+                    index2 = a[i];
+                } 
+            }
+        }
+    }
+    if (a[size-2] > a[size-1]) {
+        if (index1 == -1) {
+            index1 = a[size-1];
+            } else {
+                index2 = a[size-1];
+            }
+    }
+    vector<int> result;
+    if (index1 == -1 && index2 == -1) {
+        result.push_back(-1);
+        result.push_back(-1);
+    }
+    cout<<index1<<" "<<index2<<endl;
+    
+    for (int i=0; i<size; i++) {
+        if (index1 < a[i] && index1 > -1) {
+            index1 = i;
+            break;
+        }
+    }
+    int finalValue;
+    for (int i=size-1; i>=0; i--) {
+        if (index2 <= a[i] && index2 > -1) {
+            finalValue = i;
+        } 
+        if (index2 > a[i]) {
+            break;
+        }
+    }
+    result.push_back(index1);
+    result.push_back(finalValue);
+    return result;
+}
+
+
 int main()
 {
 // vector<int> v {1,2, 3,4,5,6,7,8,9,15};
@@ -191,11 +272,12 @@ int main()
 // }
 // vector<int> v{5,6,1,2,3,4,5,4,3,2,0,1,2,3,-2,4};
 // cout<<mountain(v);
-vector<int> v{0,1,0,2,1,0,1,3,2,1,2,1};
+vector<int> v{1,2,3,4,5,8,6,7,9,10,11};
 // cout<<longestBand(v);
 
 // cout<<isIsomorphic("paper" , "title");
 // vector<int> v{};
 // cout<<largestBand(v);
-cout<<rain(v);
+  vector<int> s = subArraySort(v);
+  cout<<s[0]<<" "<<s[1]<<endl;
 }
