@@ -257,6 +257,73 @@ vector<int> subArraySort(vector<int> a) {
     return result;
 }
 
+bool subArrayHelper(vector<int> a , int index) {
+    int size = a.size() - 1;
+    
+    if (index == 0) {
+        return a[0] > a[1];
+    }
+    
+    if (size == index) {
+        return a[size] < a[size-1];
+    }
+    
+    return a[index] > a[index + 1] or a[index -1] > a[index] ;
+}
+
+void subArraySortOptimized(vector<int> a) {
+    int size = a.size();
+    int smaller = INT_MAX;
+    int bigger = INT_MIN;
+    for (int i=0; i<size; i++) {
+        if (subArrayHelper(a , i)) {
+            smaller = min(smaller, a[i]);
+            bigger = max(bigger, a[i]);
+        }
+    }
+    
+    if (smaller == INT_MAX )
+    cout<<-1<<" , "<<-1;
+    
+    cout<<bigger<<" "<<smaller<<endl;
+    
+    int left = 0;
+    while (smaller >= a[left]) 
+    left++;
+    
+    int right = size - 1;    
+    while (bigger <= a[right])
+    right--;
+    
+     cout<<left<<" , "<<right;
+}
+
+
+int minSwaps(vector<int> v) {
+    int size = v.size();
+    pair<int,int> ap[size];
+    for (int i=0; i<size; i++) {
+        ap[i].first = v[i];
+        ap[i].second = i;
+    }
+    sort(ap , ap+size);
+    int ans = 0;
+    vector<bool> visited(size, false);
+    for (int i=0; i<size; i++) {
+        if (visited[i] || i == ap[i].second) {
+            continue;
+        }
+        int current = i;
+        int cycle = 0;
+        while (!visited[current]) {
+            visited[current] = true;
+            cycle++;
+            current = ap[current].second;
+        }
+        ans += cycle - 1;
+    }
+    return ans;
+}
 
 int main()
 {
@@ -272,12 +339,11 @@ int main()
 // }
 // vector<int> v{5,6,1,2,3,4,5,4,3,2,0,1,2,3,-2,4};
 // cout<<mountain(v);
-vector<int> v{1,2,3,4,5,8,6,7,9,10,11};
+vector<int> v{10,11,5,4,3,2,1};
 // cout<<longestBand(v);
 
 // cout<<isIsomorphic("paper" , "title");
 // vector<int> v{};
 // cout<<largestBand(v);
-  vector<int> s = subArraySort(v);
-  cout<<s[0]<<" "<<s[1]<<endl;
+  cout<<minSwaps(v);
 }
