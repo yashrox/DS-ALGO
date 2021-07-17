@@ -1,0 +1,48 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int balanced(string a) {
+    int n = a.size();
+    stack<char> s;
+    for (int i=0; i<n; i++) {
+        if (a[i] == '}' && !s.empty()) {
+            if (s.top() == '{') {
+                s.pop();
+            } else {
+                s.push(a[i]);
+            }
+        } else {
+            s.push(a[i]);
+        }
+    }
+    
+    int ans = 0;
+    while (!s.empty()) {
+        int preValue = s.top();
+        s.pop();
+        if (s.top() == '}' && preValue == '{') {
+            ans += 2;
+        } else {
+            ans += 1;
+        }
+        s.pop();
+    }
+    
+    return ans;
+}
+
+int main()
+{
+    string value = "{{{{";
+    cout<<balanced(value);
+    return 0;
+}
