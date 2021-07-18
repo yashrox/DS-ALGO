@@ -1,0 +1,65 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*************************** STRING  *********************************************/
+
+#include <iostream>
+#include <string>
+#include <bits/stdc++.h>
+
+using namespace std;
+
+void stringSearch(string big,string small){
+    //store the occurrences in the result vector
+    vector<int> result = {};
+    int index = big.find(small, 0);
+    while(index != -1) {
+        result.push_back(index);
+        index  = big.find(small, index + 1);
+    }
+    for (int i=0; i<result.size(); i++) {
+        cout<<result[i]<<endl;
+    }
+}
+
+void removeSpaces(char s[], int size) {
+    int totalSpaces = 0;
+    for (int i=0; i<size; i++) {
+        if (s[i] == ' ') {
+            totalSpaces++;
+        }
+    }
+    cout<<totalSpaces<<endl;
+    int j = (size - 1) +  (3 * totalSpaces) - totalSpaces;
+    int iterater = j;
+    s[iterater + 1] = '\0';
+    cout<<j<<endl;
+    for (int i=(size - 1); i>=0; i--) {
+        if (s[i] == ' ') {
+            s[j--] = '%';
+            s[j--] = '0';
+            s[j--] = '2';
+        } else {
+            s[j--] = s[i];
+        }
+    }
+    cout<<endl;
+    for (int i=0; i<=iterater; i++) {
+        cout<<s[i]<<" ";
+    }
+}
+
+int main()
+{
+    // string big = "We are STL STLSTL STLL learning about STL strings. STL string class STL is quite powerful";
+    // string small = "STL";
+    // stringSearch(big, small);
+    char input[100];
+    // v = {'h', 'e', 'l', 'l', 'o' , ' ', 'w', 'o', 'r', 'l', 'd', ' ', ' ', 'y', 'o', '?'};
+    cin.getline(input, 100);
+    removeSpaces(input, strlen(input));
+    return 0;
+}
