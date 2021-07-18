@@ -325,6 +325,72 @@ int minSwaps(vector<int> v) {
     return ans;
 }
 
+pair<int,int> minDifference(vector<int> a,vector<int> b){
+
+    //Complete this method
+    int size1 = a.size();
+    int size2 = b.size();
+    // sort(a.begin(), a.end());
+    // sort(b.begin(), b.end());
+    int min = INT_MAX;
+    pair<int,int> ans;
+    
+    for (int i=0; i<size1; i++) {
+        int localMin = INT_MAX;
+        int secondValue;
+        for (int j=0; j<size2; j++) {
+            if (localMin > abs(a[i] - b[j]) ) {
+                localMin =abs(a[i] - b[j]);
+                secondValue = b[j];
+            }
+        }
+        if (min > localMin) {
+            min = localMin;
+            ans.first = a[i];
+            ans.second = secondValue;
+        }
+    }
+    
+    return ans;
+}
+
+vector<int> productArray(vector<int> arr){
+    
+    //Create an output Array
+    int n = arr.size();
+    vector<int> output(n,1);
+    
+    //update the output array and return
+    //complete the code
+    
+    int left[n];
+    int right[n];
+    
+    int leftValue = arr[0];
+    int rightValue = arr[n-1];
+    right[n-1] = rightValue;
+    left[0] = leftValue;
+    
+    for (int i=1; i<n; i++) {
+        leftValue *= arr[i];
+        left[i] = leftValue;
+    }
+    int rightIt = 1;
+    for (int i=n-2; i>=0; i--) {
+        rightValue *= arr[i];
+        right[i] = rightValue;
+    }
+    output[0] = right[1];
+    output[n-1] = left[n-2];
+
+    for (int i=1; i<=n-2; i++) {
+        output[i] = left[i-1] * right[i+1]; 
+    }
+    
+    return output;
+}
+
+
 int main()
 {
 // vector<int> v {1,2, 3,4,5,6,7,8,9,15};
