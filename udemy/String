@@ -134,7 +134,18 @@ int main()
     // stringSearch(big, small);
     char input[100];
     // v = {'h', 'e', 'l', 'l', 'o' , ' ', 'w', 'o', 'r', 'l', 'd', ' ', ' ', 'y', 'o', '?'};
-    cin.getline(input, 100);
-    removeSpaces(input, strlen(input));
+    // cin.getline(input, 100);
+    // removeSpaces(input, strlen(input));
+    // string str = "hello how are you?";
+    // stringToeknizer(str, ' ');
+    // vector<string> v{"92 022", "82 12", "77 13"};
+    // dstringValue(v , 2 , false, 2);
+    string s1 = "abc";
+    // getline(cin, s1);
+    // string s2 = "cinef";
+    // cout<<subset(s1 , s2);
+    generateSortedSubset(s1);
+    //int y = 'b' - 'a' + 1;
+    // cout<<y;
     return 0;
 }
