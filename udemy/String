@@ -52,6 +52,81 @@ void removeSpaces(char s[], int size) {
     }
 }
 
+void stringToeknizer(string s , char d) {
+    vector<string> v;
+    
+    int start = 0;
+    int end = 0;
+    for (int i=0; i<s.size(); i++) {
+        if (s[i] == d) {
+            end = i ;
+            v.push_back(s.substr(start , end - start));
+            start = end + 1;
+        }
+    }
+    
+    v.push_back(s.substr(start , end-start));
+    
+    for (int i=0; i< int(v.size()); i++) {
+        cout<<v[i]<<endl;
+    }
+}
+
+string subset(string s1 , string s2) {
+    int size1 = s1.size();
+    int size2 = s2.size();
+    int i = 0, j = 0;
+    
+    while (i < size1  && j < size2) {
+        if (s1[i] == s2[j]) {
+            j++;
+        }
+        i++;
+    }
+    
+    if (j == size2) {
+        return "true";
+    } 
+    return "false";
+}
+
+vector<string> subSequence;
+void sortSubsequence(string s , string o) {
+    if (s[0] == '\0') {
+        subSequence.push_back(o);
+        return;
+    }
+    sortSubsequence(s.substr(1), o + s[0]);
+    sortSubsequence(s.substr(1) , o);
+}
+
+int lexcographical(string str) {
+    int ans = 0;
+    int i= 0;
+    while (i < str.size() ) {
+        ans = ans * 10 + int(str[i] - 'a' + 1);
+    }
+    cout<<ans<<endl;
+    return ans;
+}
+
+bool sortStringOp(string a ,  string b) {
+    if (a.length() == b.length()) {
+        return a  < b;
+    }
+    return a.length() < b.length();
+}
+
+void generateSortedSubset(string s) {
+    string out = "";
+    sortSubsequence(s , out);
+    sort(subSequence.begin(), subSequence.end(), sortStringOp);
+    for (int i=0; i<subSequence.size(); i++) {
+        cout<<subSequence[i]<<" ";
+    }
+}
+
+
 int main()
 {
     // string big = "We are STL STLSTL STLL learning about STL strings. STL string class STL is quite powerful";
