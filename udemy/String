@@ -126,6 +126,62 @@ void generateSortedSubset(string s) {
     }
 }
 
+bool compare(int a , int b) {
+    string x = to_string(a);
+    string y = to_string(b);
+    int i = 0 , j = 0 ;
+    while(i<x.length() && j<y.length()) {
+        if (int(x[i]) == int(y[i])) {
+        if (x.length() != y.length()) {
+            return x.length() < y.length();    
+        }
+        i++; j++;
+        } else {
+            return int(x[i]) > int(y[i]);        
+        }    
+    }
+}
+
+string concatenate(vector<int> numbers){
+    sort(numbers.begin(), numbers.end(), compare);
+    string str = "";
+    for (int i=0; i<int(numbers.size()); i++) {
+        str += to_string(numbers[i]);
+    }
+    return str;
+}
+
+void compressString(string a){   
+    //complete the function to return output string
+  string newString = "";
+    int maxCount = 0;
+    int count = 1;
+    char prevChar = a[0];
+    for (int i=1; i<a.length(); i++) {
+        if (prevChar == a[i]) {
+            count++;
+        } else {
+            newString += prevChar;
+            newString += to_string(count);
+            if (count > maxCount) {
+                maxCount = count;
+            }
+            count = 1;
+            prevChar = a[i];
+        }
+    }
+    newString += prevChar;
+    newString += to_string(count);
+    
+    if (maxCount > 1) {
+        cout<<newString;    
+        return;
+    }
+    
+   cout<<a;
+   return;
+}
+
 
 int main()
 {
@@ -147,5 +203,9 @@ int main()
     generateSortedSubset(s1);
     //int y = 'b' - 'a' + 1;
     // cout<<y;
+      // vector<int> num{10,200,30,11,1,2,3};
+    // cout<<concatenate(num);
+    string str = "abxd";
+    compressString(str);
     return 0;
 }
