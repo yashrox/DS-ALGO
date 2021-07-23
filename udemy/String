@@ -182,6 +182,74 @@ void compressString(string a){
    return;
 }
 
+bool is_Palindrome(string str) {
+    int i=0 , size = str.size() - 1;
+    
+    while (i < size) {
+        if (str[i] != str[size]) {
+            return false;
+        }
+        i++;
+        size--;
+        
+    }
+    return true;
+}
+
+string breakPalindrome(string str) {
+    string answer = "";
+    
+    for (int i=0; i<str.size(); i++) {
+        string str2 = str;
+        for (char j = 'a' ; j<='z'; j++) {
+            if (str2[i] != j) {
+                str2[i] = j;
+                if (!is_Palindrome(str2)) {
+                 if (answer.size() == 0) {
+                     answer = str2;
+                 } else {
+                     answer = min(answer , str2); // lexographically checks
+                 }    
+                }
+            } 
+        }
+    }
+    return answer;
+}
+
+string breakPalindromeOptimized(string str) {
+    for (int i=0; i<str.size(); i++) {
+        int j = str.size() - 1 - i;
+        if (i == j) {
+            continue;
+        }
+        if (str[i] != 'a') {
+            str[i] = 'a';
+            return str;
+        }
+    }
+    str[str.size() - 1] = 'b';
+    return str;
+
+}
+
+void convertUpperCaseFirstWord(string str) {
+     for (int i=0; i<str.size(); i++) {
+        if (i == 0 && str[i] != ' ') {
+                str[i] = toupper(str[i]);
+        } else if (str[i] == ' ') {
+            while(str[i] == ' ') {
+                i++;
+            }
+            str[i] = toupper(str[i]);
+        } else {
+            str[i] = tolower(str[i]);
+        }
+    }
+
+    cout<<str<<endl;
+
+}
 
 int main()
 {
