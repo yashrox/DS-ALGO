@@ -1,0 +1,80 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+void lowerBound(int a[], int start, int end , int& lower, int value) {
+    if (start > end) {
+        return;
+    }
+    int mid = (start + end)/2;
+    if (a[mid] == value) {
+        lower = min(mid,lower);
+        lowerBound(a, start, mid-1, lower, value);
+    } 
+    if (a[mid] < value) {
+        lowerBound(a, mid+1, end, lower, value);
+    }
+    if (a[mid] > value) {
+        lowerBound(a, start, mid-1, lower, value);
+    }
+}
+
+void upperBound(int a[], int start, int end, int& higher, int value) {
+    if (start > end) {
+        return ;
+    }
+    int mid = (start + end)/2;
+    if (a[mid] == value) {
+        higher = max(mid, higher);
+        upperBound(a, mid+1, end ,higher, value);
+    }
+    if (a[mid] > value) {
+        upperBound(a, start, mid-1, higher, value);
+    }
+    if (a[mid] < value) {
+        upperBound(a, mid+1, end ,higher, value);
+    }
+}
+
+int binarySearch(int a[], int start , int end, int value) {
+    if (start > end) {
+        return -1;
+    }
+    int mid = (start + end)/2;
+    if (a[mid] == value) {
+        return mid;
+    }
+    if (a[mid] > value) {
+        return binarySearch(a,start,mid-1,value);
+    }
+    if (a[mid] < value) {
+        return binarySearch(a,mid+1,end,value);
+    }
+}
+
+int main()
+{
+    int a[] = {0,1,1,1,1,2,2,2,3,3,4,4,5};
+    int index = binarySearch(a, 0, 12, 2);
+    int lowerIndex = index;
+    int higherIndex = index;
+    if (index == -1) {
+        cout<<"Not Found";
+    } else {
+        lowerBound(a, 0, index-1, lowerIndex, 2);
+        upperBound(a, index+1,12, higherIndex, 2);
+    }
+    cout<<lowerIndex<<" "<<higherIndex<<endl;
+    
+    // one line solve
+    // cout<<upper_bound(a , a+13, 2) - lower_bound(a, a+13, 2);
+    return 0;
+}
