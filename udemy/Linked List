@@ -1,0 +1,133 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <stack>
+#include <vector>
+using namespace std;
+
+class LinkedList {
+    public: 
+    int data;
+    LinkedList* next = NULL;
+    LinkedList(int data) {
+        this->data = data;
+    }
+};
+
+LinkedList* mergeLinkList(LinkedList* l1 , LinkedList* l2) {
+    LinkedList* head = NULL;
+    LinkedList* tempNext  = NULL;
+    while(l1 != NULL && l2 != NULL) {
+        cout<<l1->data<<" "<<l2->data<<endl;
+        if (l1->data < l2->data) {
+            if (head == NULL) {
+                head = l1;
+            } else {
+                tempNext->next = l1;
+            }
+            tempNext = l1;
+            l1 = l1->next;
+        } else {
+            if (head == NULL) {
+                head = l2;
+            } else {
+                tempNext->next = l2;
+            }
+            tempNext = l2;
+            l2 = l2->next;
+        }
+    }
+    
+    if (l2 != NULL ) {
+        tempNext->next = l2;
+    }
+
+    if (l1 != NULL) {
+        tempNext->next = l1;
+    }
+    
+    return head;
+}
+
+bool redudantParanthesis(string str) {
+    stack<char> s;
+    bool isoperator = false;
+    for (int i=0; i<str.length(); i++) {
+        char value = str[i];
+        if (value == ')') {
+         char stackVal = s.top();
+         s.pop();
+        while (stackVal != '(') {
+        if (stackVal == '+' || stackVal == '-' || 
+        stackVal == '*' || stackVal == '/') {
+            isoperator = true;
+        } 
+        stackVal = s.top();
+        s.pop();     
+        }
+        if (!isoperator) {
+            return false;
+        }
+        isoperator = false;
+    } else {
+        s.push(value);
+    }
+    }
+    return true;
+}
+
+void stockSpan(vector<int> v) {
+    int size = v.size();
+    stack<pair<int,int>> s;
+    s.push(make_pair(v[0] , 0));
+    cout<<1<<endl;
+    for (int i=1; i<size; i++) {
+        pair<int,int> value  = s.top();
+        int count = 1;
+        if (value.first < v[i]) {
+            while (value.first < v[i]) {
+                count += value.second;
+                s.pop();
+                value = s.top();
+            }
+            s.push(make_pair(v[i] , count));
+        } else {
+            s.push(make_pair(v[i] , count));
+        }
+        cout<<count<<endl;
+    }
+}
+
+int main()
+{
+    LinkedList* head1 = new LinkedList(1);
+    LinkedList* h1 = new LinkedList(5);
+    head1->next = h1;
+    LinkedList* h2 = new LinkedList(6);
+    h1->next = h2;
+    LinkedList* h3 = new LinkedList(8);
+    h2->next = h3;
+    
+    LinkedList* head2 = new LinkedList(2);
+    LinkedList* h21 = new LinkedList(3);
+    head2->next = h21;
+    LinkedList* h22 = new LinkedList(4);
+    h21->next = h22;
+    LinkedList* h23 = new LinkedList(7);
+    h22->next = h23;
+    
+    // LinkedList* head = mergeLinkList(head1 , head2);
+    
+    // while (head != NULL) {
+    //     cout<<head->data<<" ";
+    //     head = head->next;
+    // }
+    
+    // if (redudantParanthesis("((a+b))")) {
+    //     cout<<"Balanced"<<endl;
+    // } else {
+    //     cout<<"Not Balanced"<<endl;
+    // }
+    vector<int> v = {100 , 80 , 60 , 70, 60 , 75, 85};
+    stockSpan(v);
+    return 0;
+}
