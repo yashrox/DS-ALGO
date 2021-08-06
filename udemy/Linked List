@@ -97,6 +97,51 @@ void stockSpan(vector<int> v) {
     }
 }
 
+class LL {
+    public: 
+    int data;
+    LL* next = NULL;
+    LL (int data) {
+        this->data = data;
+    }
+};
+
+LL* reverseK(LL* head , int k) {
+    
+    // declare for k reverse
+    LL* joinLink1 = head;
+    LL* joinLink2 = NULL;
+    
+    // decalre for reverse LL
+    LL* tempHead = head;
+    LL* newHead = NULL;
+    LL* temp = head->next;
+    tempHead->next = NULL;
+    int i = 1;
+    
+    while (temp != NULL) {
+        if (i%k == 0) {
+            cout<<tempHead->data<<" "<<i<<temp->data<<endl;
+            if(newHead == NULL) {
+                newHead = tempHead;
+                joinLink2 = temp;
+            } else {
+                  joinLink1->next = tempHead;
+                  joinLink1 = joinLink2;
+                  joinLink2 = temp;
+            }
+        }
+        LL* nextLL = temp->next;
+        temp->next = tempHead;
+        tempHead = temp;
+        temp = nextLL;
+        i++;
+    }
+    joinLink1->next = tempHead;
+    joinLink2->next = NULL;
+    return newHead;
+}
+
 int main()
 {
     LinkedList* head1 = new LinkedList(1);
