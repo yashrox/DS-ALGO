@@ -251,6 +251,41 @@ void convertUpperCaseFirstWord(string str) {
 
 }
 
+bool palindrome(string S, int i, int j) {
+    while (i < j) {
+        if (S[i] != S[j]) {
+            return false;
+        }
+        i++; j--;
+    }
+    return true;
+}
+
+string longestP(string s) {
+    int size = s.size();
+    string str = "";
+    int maxLength = -1;
+    for (int i=0; i<size; i++) {
+        int j = size - 1;
+        while (i < j) {
+            if (palindrome(s, i , j)) {
+                if (maxLength < (j - i + 1)) {
+                    int len = j - i + 1;
+                    str = s.substr(i , len);
+                    maxLength = len;
+                    cout<<str<<endl;
+                }
+            }
+            j--;
+        }
+    }
+    if (maxLength == -1) 
+    return str + s[0];
+
+    return str;
+}
+
+
 int main()
 {
     // string big = "We are STL STLSTL STLL learning about STL strings. STL string class STL is quite powerful";
