@@ -1,0 +1,73 @@
+// Lenght of longest Non Repeating String ***************************************************
+
+int lengthOfLongestSubstring(string s) {
+
+        unordered_map<char, int> m;
+        int i=0;
+        int count = 0;
+        int maxCount = 0;
+        int n = s.length();
+        int startWindow = 0;
+        while(i<n) {
+            if (m.count(s[i]) > 0) {
+                int index = m[s[i]]; 
+                // At starting startWindow will be 0
+                // There are cases abcdbea
+                // If at any point startWindow > prev duplicate index this will not consider, we have move from that window
+                // duplicate pre index = 2 , startWindow = 4 -> prev count is already not stored
+                if (startWindow < index + 1) {
+                    count = i - index;
+                    startWindow = index + 1;
+                } else {
+                    count++;
+                }
+                
+            }  else {
+                count++;
+            }
+            m[s[i]] = i;
+            maxCount = max(count, maxCount);
+            i++;
+        }
+   
+         return maxCount;
+    }
+
+
+
+
+
+
+
+******************************************************  Housing Udemy Question -> ****************************************************************
+Problem Statement -> Max area count = 8
+
+    vector<int> v{1,3,2,1,4,1,8,1,3,2,1,1,2};
+      houseImplementationOptimized(v,8);
+
+
+void houseImplementationOptimized(vector<int> v, int k) {
+     int i=0;
+     int j=0;
+     int n = v.size();
+     int sum = 0;
+     while(j<n) {
+        sum += v[j];
+        j++;
+        
+        while (sum > k && i < j) {
+            sum -= v[i];
+            i++;
+        }
+        
+        if (sum == k) {
+            cout<<i<<" "<<j-1<<endl;
+        }
+        
+     }
+}
+
+
+
+
+
