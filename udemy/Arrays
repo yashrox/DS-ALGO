@@ -414,6 +414,62 @@ vector<int> productArray(vector<int> arr){
     return output;
 }
 
+//My Approach for sliding window ---->
+void houseImplementation(vector<int> v, int k) {
+    if (v.size() == 1 && v[0] == k) {
+        cout<<0<<endl;
+        return;
+    }
+     int i=0;
+     int j=i;
+     int sum = v[i];
+     while(i<=j) {
+         if (v[i] == k) {
+             cout<<i<<" "<<i<<endl;
+         }
+        
+        if (sum < k) {
+            j++;
+            sum += v[j];
+        } else if (sum > k) {
+            sum -= v[i];
+            i++;
+        }
+        
+        if (sum == k) {
+            cout<<i<<" "<<j<<endl;
+            sum -= v[i];
+            i++;
+            j++;
+            sum += v[j];
+        }
+     }
+}
+
+OPtimized this ----> (House problem)
+
+void houseImplementationOptimized(vector<int> v, int k) {
+     int i=0;
+     int j=0;
+     int n = v.size();
+     int sum = 0;
+     while(j<n) {
+        sum += v[j];
+        j++;
+        
+        while (sum > k && i < j) {
+            sum -= v[i];
+            i++;
+        }
+        
+        if (sum == k) {
+            cout<<i<<" "<<j-1<<endl;
+        }
+        
+     }
+}
+
+
 
 int main()
 {
