@@ -134,3 +134,68 @@ ANS -> cwae
 
 
 
+//****************************************************** Find Substring *************************************************************************************
+
+input -> "wordgoodgoodgoodbestword"
+words = ["word","good","best","good"]
+Expected = [8]
+
+************* Only 147 Testcases passed*********
+
+ vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> result;
+        if (words.size() == 0 || s.length() == 0) {
+            return result;
+        }
+        unordered_map<string, int> s1;
+        int uniqueCount = 0;
+        for (int i=0; i<words.size(); i++) {
+            if (s1.count(words[i]) > 0) {
+                s1[words[i]] = 1+ s1[words[i]];
+            } else {
+                s1[words[i]] = 1;
+            }
+            uniqueCount++;
+        }
+        int windowSize = words[0].length();
+        int i = 0;
+        int count = 0;
+        unordered_map<string, int> elementAdded;
+        int totalCount = uniqueCount * windowSize;
+        while (i < s.length()) {
+            string temp = s.substr(i, windowSize);
+            if (elementAdded.count(temp) > 0) {
+                   elementAdded[temp] = elementAdded[temp] + 1;
+               } else {
+                   elementAdded[temp] = 1;
+            }
+            int elemCount = elementAdded[temp];
+            int s1Count = s1.count(temp) > 0 ? s1[temp]  : 0;
+            if (s1.count(temp) > 0 && elemCount <= s1Count) {
+                count++;
+               i = i + windowSize;
+            } else if (s1.count(temp) > 0 && elemCount > s1Count) {
+                elementAdded.clear();
+                elementAdded[temp] = 1;
+                count = 1;
+                i = i + windowSize;
+            } else {
+                count = 0;
+                 i++;
+            }
+
+            if (count == uniqueCount) {
+                result.push_back(i - totalCount);
+                count = 0;
+                i = (i - totalCount) + windowSize;
+            }
+        }
+
+        return result;
+
+    }
+
+
+
+
+
