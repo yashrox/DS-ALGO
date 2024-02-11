@@ -71,3 +71,66 @@ void houseImplementationOptimized(vector<int> v, int k) {
 
 
 
+*********************************************************************** Min Window String ***********************************************************
+Input -> "cabwefgewcwaefgcf"
+ANS -> cwae
+
+// We can also do this using 256 char array -> T[256] = {0}; S[256] = {0};
+    // This will be easily approach
+    string minWindow(string s, string t) {
+
+        if (t.length() > s.length()) {
+            return "";
+        }
+
+        unordered_map<char,int> temp;
+        unordered_map<char,int> compareMap;
+
+        for (int i=0; i<t.length(); i++) {
+            if (compareMap.count(t[i]) > 0) {
+                compareMap[t[i]] += 1;
+            } else {
+                compareMap[t[i]] = 1;
+            }
+        }
+
+        int i = 0;
+        int n = s.length();
+        int startWindow = 0;
+        int start = -1;
+        int maxCount = INT_MAX;
+        int count = 0;
+        while (i < n) {
+            if (temp.count(s[i]) > 0) {
+                temp[s[i]]++;
+            } else {
+                temp[s[i]] = 1;
+            }
+            if (compareMap.count(s[i]) > 0 && temp[s[i]] <= compareMap[s[i]]) {
+                    count++;
+            }
+            if (count == t.length()) {
+                    while(compareMap.count(s[startWindow]) == 0 || (compareMap.count(s[startWindow]) > 0 
+                            && compareMap[s[startWindow]] < temp[s[startWindow]])) {
+                                // cout<<"DELETE Values"<<s[startWindow]<<" "<<
+                                temp[s[startWindow]] -= 1;
+                                startWindow++;
+                    }
+                     int newCount  = i - startWindow + 1;
+                     if (newCount < maxCount) {
+                         start = startWindow;
+                         maxCount = newCount;
+                     }
+            }
+            i++;
+        }
+        if (start == -1) {
+            return "";
+        }
+        return s.substr(start, maxCount);
+    }
+
+
+
+
+
