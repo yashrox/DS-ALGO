@@ -141,6 +141,60 @@ pair<int,int> subarraySorting(vector<int> a){
 }
 
 
+
+********************************************************************************************************** Angry Bird ***********************************************
+
+input -> vector<int> v{1,5,9,10,17};
+    int m = 3;
+output -> 5
+
+// We will make all possible distance of birds -> start = 0 (min bird distance) and end = 16 (v[17] - v[1]);
+
+int angryBirdsDistance(vector<int>& v, int k, int m) {
+    
+    int i=0;
+    int j=0;
+    while (j<v.size() && m > 0) {
+        if (v[j] - v[i] >= k) {
+            m--;
+            i++;
+        }
+        j++;
+    }
+    
+    if (m == 0) {
+        return k;
+    }
+    
+    return -1;
+}
+
+int angryBirds(vector<int>& v, int m) {
+    int n = v.size();
+    int start=0;
+    int end = abs(v[0] - v[(n-1)]);
+    cout<<start<<" "<<end<<endl;
+    int maxCount = 0;
+    while (start<=end) {
+        int mid = (start+end)/2;
+        cout<<mid<<endl;
+        int isValid = angryBirdsDistance(v, mid, m);
+        cout<<"isValid"<<isValid<<" "<<mid<<endl;
+        if (isValid == -1) {
+            end = mid - 1;
+        } else {
+            maxCount = max(maxCount, isValid);
+            start = mid + 1;
+        }
+    }
+    return maxCount;
+}
+
+
+
+
+
+
 int main()
 {
     // vector<vector<int>> v {{1,4,9}, {2,5,10}, {6,7,11}};
