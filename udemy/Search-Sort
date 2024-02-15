@@ -246,7 +246,24 @@ Explanation: The original array was [1,2,3,4,5] rotated 3 times.
 
 
 
+     int findMinOptimized(vector<int>& a) {
+        int n = a.size();
+        int startIndex = 0;
+        int endIndex = n-1;
+        int mid1 = (startIndex + endIndex ) / 2;
+        int midIndex = a[mid1];
+        while(startIndex<=endIndex) {
+            int mid = (startIndex + endIndex)/2;
+            midIndex = min(a[mid], midIndex);
+            if (a[mid] < a[endIndex]) {
+                endIndex = mid - 1;
+                continue;
+            }
+            startIndex = mid + 1;
+        }
+        return midIndex;
 
+**************************************************************************************************************************************************************************************************************************
 
 int main()
 {
